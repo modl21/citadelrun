@@ -184,6 +184,10 @@ export function GameCanvas({ onGameOver, isPlaying, isMobile }: GameCanvasProps)
         survivalTime: 0,
         gameSpeed: 1.5,
         speedMultiplier: 1,
+        fuelFlashTimer: 0,
+        fuelExplosionTimer: 0,
+        fuelExplosionX: 0,
+        fuelExplosionY: 0,
       };
       renderGame(ctx!, idleState, frame);
       idleAnimFrame = requestAnimationFrame(animateIdle);

@@ -230,6 +230,10 @@ export function createInitialState(startTime: number): GameState {
     survivalTime: 0,
     gameSpeed: INITIAL_SPEED,
     speedMultiplier: 1,
+    fuelFlashTimer: 0,
+    fuelExplosionTimer: 0,
+    fuelExplosionX: 0,
+    fuelExplosionY: 0,
     gameOver: false,
     lastBulletTime: 0,
     screenShake: 0,
@@ -256,6 +260,10 @@ export function updateGame(state: GameState, input: InputState, now: number): Ga
 
   // ── Frame counter
   ns.frame = state.frame + 1;
+
+  // decay warning/effect timers
+  ns.fuelFlashTimer = Math.max(0, state.fuelFlashTimer - 1);
+  ns.fuelExplosionTimer = Math.max(0, state.fuelExplosionTimer - 1);
 
   // ── Survival time (in seconds)
   ns.survivalTime = (now - state.startTime) / 1000;
@@ -388,6 +396,19 @@ export function updateGame(state: GameState, input: InputState, now: number): Ga
             ns.speedMultiplier *= 1.1;
             const boostedBaseSpeed = INITIAL_SPEED + elapsed * SPEED_RAMP_PER_SECOND;
             ns.gameSpeed = Math.min(MAX_SPEED, boostedBaseSpeed * ns.speedMultiplier);
+            ns.fuelFlashTimer = 72;
+            ns.fuelExplosionTimer = 26;
+            ns.fuelExplosionX = obs.x + obs.width / 2;
+            ns.fuelExplosionY = obs.y + obs.height / 2;
+
+            // Big fuel explosion particle burst
+            newParticles = [
+              ...newParticles,
+              ...makeParticles(obs.x + obs.width / 2, obs.y + obs.height / 2, 30, COLOR_HIT_FLASH, 2.5, 7),
+              ...makeParticles(obs.x + obs.width / 2, obs.y + obs.height / 2, 22, COLOR_BARREL, 2, 6),
+              ...makeParticles(obs.x + obs.width / 2, obs.y + obs.height / 2, 18, COLOR_PARTICLE_DUST, 1.5, 4.5),
+            ];
+            ns.screenShake = 10;
           }
 
           const colors = [COLOR_HIT_FLASH, COLOR_CRATE, COLOR_BARREL, COLOR_WALL];
@@ -396,7 +417,7 @@ export function updateGame(state: GameState, input: InputState, now: number): Ga
             ...newParticles,
             ...makeParticles(obs.x + obs.width / 2, obs.y + obs.height / 2, 12, col, 1.5, 5),
           ];
-          ns.screenShake = 4;
+          ns.screenShake = Math.max(ns.screenShake, 4);
         } else {
           // Hit but not destroyed
           newObstacles[i] = { ...obs, hp: newHp, hitFlash: 8 };

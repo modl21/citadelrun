@@ -623,6 +623,36 @@ export function renderGame(ctx: CanvasRenderingContext2D, state: GameState, fram
   }
   ctx.globalAlpha = 1;
 
+  // ── Fuel explosion ring (big blast) ───────────────────────────────────────
+  if (state.fuelExplosionTimer > 0) {
+    const t = 1 - state.fuelExplosionTimer / 26;
+    const radius = 8 + t * 48;
+    const alpha = Math.max(0, 0.85 - t * 0.85);
+
+    const blast = ctx.createRadialGradient(
+      state.fuelExplosionX,
+      state.fuelExplosionY,
+      4,
+      state.fuelExplosionX,
+      state.fuelExplosionY,
+      radius,
+    );
+    blast.addColorStop(0, `rgba(255, 228, 168, ${alpha})`);
+    blast.addColorStop(0.45, `rgba(212, 176, 122, ${alpha * 0.75})`);
+    blast.addColorStop(1, 'rgba(82, 49, 28, 0)');
+
+    ctx.fillStyle = blast;
+    ctx.beginPath();
+    ctx.arc(state.fuelExplosionX, state.fuelExplosionY, radius, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.strokeStyle = `rgba(255, 214, 153, ${alpha * 0.8})`;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(state.fuelExplosionX, state.fuelExplosionY, radius * 0.72, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+
   ctx.restore();
 
   // ── HUD ───────────────────────────────────────────────────────────────────
@@ -644,5 +674,16 @@ export function renderGame(ctx: CanvasRenderingContext2D, state: GameState, fram
     ctx.fillStyle = 'rgba(255, 208, 142, 0.45)';
     ctx.font = '8px "Press Start 2P", monospace';
     ctx.fillText(`SPD ${speedPct}%`, GAME_WIDTH / 2, 18);
+  }
+
+  // Flash warning when fuel penalty triggers
+  if (state.fuelFlashTimer > 0) {
+    const blinkOn = Math.floor(state.fuelFlashTimer / 3) % 2 === 0;
+    if (blinkOn) {
+      ctx.textAlign = 'center';
+      ctx.font = '10px "Press Start 2P", monospace';
+      ctx.fillStyle = 'rgba(255, 228, 178, 0.95)';
+      ctx.fillText('10% FASTER', GAME_WIDTH / 2, 34);
+    }
   }
 }

@@ -65,6 +65,10 @@ export interface GameState {
   survivalTime: number; // seconds survived
   gameSpeed: number; // current scrolling speed (increases over time)
   speedMultiplier: number; // hazard-based speed penalty multiplier
+  fuelFlashTimer: number; // frames remaining for "10% FASTER" warning flash
+  fuelExplosionTimer: number; // frames remaining for fuel explosion ring effect
+  fuelExplosionX: number; // last fuel explosion center X
+  fuelExplosionY: number; // last fuel explosion center Y
   gameOver: boolean;
   lastBulletTime: number;
   screenShake: number;
