@@ -229,6 +229,7 @@ export function createInitialState(startTime: number): GameState {
     destroyScore: 0,
     survivalTime: 0,
     gameSpeed: INITIAL_SPEED,
+    speedMultiplier: 1,
     gameOver: false,
     lastBulletTime: 0,
     screenShake: 0,
@@ -262,7 +263,8 @@ export function updateGame(state: GameState, input: InputState, now: number): Ga
   // ── Difficulty & speed ramp
   const elapsed = ns.survivalTime;
   ns.difficulty = Math.min(1, elapsed / 90); // reaches 1 at 90 seconds, stays there
-  ns.gameSpeed = Math.min(MAX_SPEED, INITIAL_SPEED + elapsed * SPEED_RAMP_PER_SECOND);
+  const baseSpeed = INITIAL_SPEED + elapsed * SPEED_RAMP_PER_SECOND;
+  ns.gameSpeed = Math.min(MAX_SPEED, baseSpeed * state.speedMultiplier);
 
   // ── Score: survival
   ns.score = Math.floor(elapsed * SCORE_PER_SECOND) + state.destroyScore;
@@ -380,6 +382,14 @@ export function updateGame(state: GameState, input: InputState, now: number): Ga
           newObstacles[i] = { ...obs, hp: 0, active: false };
           const points = obs.maxHp === 1 ? SCORE_SHOOT1 : obs.maxHp === 2 ? SCORE_SHOOT2 : SCORE_SHOOT3;
           destroyScoreGain += points;
+
+          // Fuel drum penalty: exploding drums permanently accelerates the run by +10%
+          if (obs.type === 'shoot2') {
+            ns.speedMultiplier *= 1.1;
+            const boostedBaseSpeed = INITIAL_SPEED + elapsed * SPEED_RAMP_PER_SECOND;
+            ns.gameSpeed = Math.min(MAX_SPEED, boostedBaseSpeed * ns.speedMultiplier);
+          }
+
           const colors = [COLOR_HIT_FLASH, COLOR_CRATE, COLOR_BARREL, COLOR_WALL];
           const col = colors[Math.min(obs.maxHp - 1, 3)];
           newParticles = [

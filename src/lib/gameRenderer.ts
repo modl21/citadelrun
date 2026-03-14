@@ -294,26 +294,42 @@ function drawObstacle(ctx: CanvasRenderingContext2D, obs: Obstacle, frame: numbe
     }
 
     case 'shoot1': {
-      // Scrapyard mine crate
+      // Scrapyard truck wreck
+      const bodyY = y + h * 0.28;
+      const bodyH = h * 0.48;
+      const cabW = w * 0.36;
+
+      // Main chassis
       ctx.fillStyle = color;
-      ctx.fillRect(x, y, w, h);
+      ctx.fillRect(x + 1, bodyY, w - 2, bodyH);
 
-      ctx.fillStyle = 'rgba(43, 22, 8, 0.45)';
-      ctx.fillRect(x + 2, y + 2, w - 4, 5);
-      ctx.fillRect(x + 2, y + h - 8, w - 4, 5);
+      // Cab
+      ctx.fillStyle = '#7b5a1a';
+      ctx.fillRect(x + w - cabW - 1, y + h * 0.15, cabW, bodyH + h * 0.13);
 
-      // Hazard symbol
-      ctx.fillStyle = '#2a1506';
-      ctx.beginPath();
-      ctx.moveTo(x + w * 0.5, y + h * 0.28);
-      ctx.lineTo(x + w * 0.72, y + h * 0.66);
-      ctx.lineTo(x + w * 0.28, y + h * 0.66);
-      ctx.closePath();
-      ctx.fill();
+      // Bed rail
+      ctx.fillStyle = 'rgba(38, 20, 6, 0.5)';
+      ctx.fillRect(x + 2, bodyY + 2, w * 0.45, 2);
 
-      ctx.strokeStyle = 'rgba(255, 179, 94, 0.45)';
+      // Window crack
+      ctx.fillStyle = 'rgba(16, 9, 3, 0.55)';
+      ctx.fillRect(x + w - cabW + 2, y + h * 0.24, cabW - 5, 4);
+
+      // Wheels
+      ctx.fillStyle = '#211104';
+      ctx.fillRect(x + 4, y + h - 6, 7, 6);
+      ctx.fillRect(x + w - 11, y + h - 6, 7, 6);
+      ctx.fillStyle = '#674925';
+      ctx.fillRect(x + 6, y + h - 4, 3, 2);
+      ctx.fillRect(x + w - 9, y + h - 4, 3, 2);
+
+      // Rust stripe
+      ctx.fillStyle = 'rgba(242, 169, 94, 0.28)';
+      ctx.fillRect(x + 3, bodyY + bodyH * 0.55, w - 6, 2);
+
+      ctx.strokeStyle = 'rgba(255, 179, 94, 0.35)';
       ctx.lineWidth = 1;
-      ctx.strokeRect(x + 1, y + 1, w - 2, h - 2);
+      ctx.strokeRect(x + 0.5, bodyY + 0.5, w - 1, bodyH + h * 0.13 - 1);
       break;
     }
 
@@ -348,31 +364,42 @@ function drawObstacle(ctx: CanvasRenderingContext2D, obs: Obstacle, frame: numbe
     }
 
     case 'shoot3': {
-      // Concrete barricade segment with rebar
+      // Small wasteland fort
+      const wallTop = y + 10;
+      const wallH = h - 10;
+
+      // Base wall
       ctx.fillStyle = color;
-      ctx.fillRect(x, y, w, h);
+      ctx.fillRect(x, wallTop, w, wallH);
 
-      // Slab seams
-      ctx.fillStyle = 'rgba(26, 14, 6, 0.35)';
-      for (let row = 5; row < h; row += 10) {
-        ctx.fillRect(x + 1, y + row, w - 2, 1);
-      }
+      // Battlements
+      ctx.fillRect(x + 1, y + 6, 4, 5);
+      ctx.fillRect(x + w * 0.5 - 2, y + 4, 5, 7);
+      ctx.fillRect(x + w - 6, y + 6, 4, 5);
 
-      // Rebar spikes protruding
+      // Gate
+      ctx.fillStyle = 'rgba(30, 16, 7, 0.45)';
+      ctx.fillRect(x + w * 0.38, y + h - 13, w * 0.24, 10);
+
+      // Side braces
+      ctx.fillStyle = '#3b2919';
+      ctx.fillRect(x + 2, wallTop + 5, 2, wallH - 7);
+      ctx.fillRect(x + w - 4, wallTop + 5, 2, wallH - 7);
+
+      // Flag/rebar pole
       ctx.fillStyle = '#2b1708';
-      for (let i = 0; i < 3; i++) {
-        const rx = x + 3 + i * ((w - 8) / 2);
-        const rH = 4 + (i % 2);
-        ctx.fillRect(rx, y - rH, 1, rH);
-      }
+      ctx.fillRect(x + w * 0.5, y - 4, 1, 8);
+      ctx.fillStyle = 'rgba(240, 150, 72, 0.28)';
+      ctx.fillRect(x + w * 0.5 + 1, y - 4, 4, 2);
 
-      // Paint stripe remnant
-      ctx.fillStyle = 'rgba(240, 150, 72, 0.2)';
-      ctx.fillRect(x + 2, y + h * 0.36, w - 4, 2);
+      // Surface wear
+      ctx.fillStyle = 'rgba(248, 200, 146, 0.13)';
+      ctx.fillRect(x + 2, wallTop + 7, w - 4, 1);
+      ctx.fillRect(x + 3, wallTop + 16, w - 6, 1);
 
-      ctx.strokeStyle = 'rgba(248, 200, 146, 0.22)';
+      ctx.strokeStyle = 'rgba(248, 200, 146, 0.24)';
       ctx.lineWidth = 1;
-      ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
+      ctx.strokeRect(x + 0.5, wallTop + 0.5, w - 1, wallH - 1);
 
       drawHpDots(ctx, x, y - 8, w, hp, maxHp, color);
       break;

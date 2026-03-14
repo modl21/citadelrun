@@ -8,9 +8,10 @@ import type { GameState } from '@/lib/gameTypes';
 interface GameCanvasProps {
   onGameOver: (score: number) => void;
   isPlaying: boolean;
+  isMobile: boolean;
 }
 
-export function GameCanvas({ onGameOver, isPlaying }: GameCanvasProps) {
+export function GameCanvas({ onGameOver, isPlaying, isMobile }: GameCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gameStateRef = useRef<GameState>(createInitialState(performance.now()));
   const frameRef = useRef(0);
@@ -182,6 +183,7 @@ export function GameCanvas({ onGameOver, isPlaying }: GameCanvasProps) {
         frame,
         survivalTime: 0,
         gameSpeed: 1.5,
+        speedMultiplier: 1,
       };
       renderGame(ctx!, idleState, frame);
       idleAnimFrame = requestAnimationFrame(animateIdle);
@@ -206,7 +208,7 @@ export function GameCanvas({ onGameOver, isPlaying }: GameCanvasProps) {
       />
 
       {/* Mobile Controls Overlay */}
-      {isPlaying && (
+      {isPlaying && isMobile && (
         <div className="absolute inset-0 z-10 pointer-events-none touch-none select-none">
           {/* JUMP — left side */}
           <div className="absolute bottom-4 left-3 pointer-events-auto">
@@ -236,10 +238,13 @@ export function GameCanvas({ onGameOver, isPlaying }: GameCanvasProps) {
             </button>
           </div>
 
-          {/* Desktop hint */}
-          <div className="absolute top-2 w-full text-center pointer-events-none text-amber-200/40 text-[10px] hidden sm:block">
-            SPACE to Jump &bull; ENTER to Fire
-          </div>
+        </div>
+      )}
+
+      {/* Desktop hint */}
+      {isPlaying && !isMobile && (
+        <div className="absolute top-2 w-full text-center pointer-events-none text-amber-200/40 text-[10px] hidden sm:block">
+          SPACE to Jump &bull; ENTER to Fire
         </div>
       )}
     </div>

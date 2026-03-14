@@ -102,6 +102,7 @@ const Index = () => {
           <GameCanvas
             onGameOver={handleGameOver}
             isPlaying={phase === 'playing'}
+            isMobile={isMobile}
           />
 
           {/* Idle overlay */}
@@ -211,15 +212,15 @@ const Index = () => {
             </span>
             <span className="flex items-center gap-1.5">
               <span className="inline-block w-2.5 h-2.5 bg-yellow-800 border border-amber-500/40" />
-              MINE CRATE (1)
+              TRUCK WRECK (1)
             </span>
             <span className="flex items-center gap-1.5">
               <span className="inline-block w-2.5 h-2.5 bg-orange-800 rounded-[2px] border border-orange-400/35" />
-              FUEL DRUM (2)
+              FUEL DRUM (2) +10% SPD
             </span>
             <span className="flex items-center gap-1.5">
               <span className="inline-block w-2.5 h-2.5 bg-stone-700 border border-orange-200/20" />
-              BARRICADE (3)
+              SMALL FORT (3)
             </span>
           </div>
         </div>

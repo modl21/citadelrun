@@ -64,6 +64,7 @@ export interface GameState {
   destroyScore: number; // bonus points from destroying obstacles
   survivalTime: number; // seconds survived
   gameSpeed: number; // current scrolling speed (increases over time)
+  speedMultiplier: number; // hazard-based speed penalty multiplier
   gameOver: boolean;
   lastBulletTime: number;
   screenShake: number;
