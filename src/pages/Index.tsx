@@ -250,13 +250,13 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Leaderboard */}
-        <Leaderboard />
-
         {/* Total play count */}
         <p className="text-[9px] font-pixel text-orange-200/35 tracking-wider">
           TOTAL RUNS {typeof totalPlayCount === 'number' ? totalPlayCount.toLocaleString() : '...'}
         </p>
+
+        {/* Leaderboard */}
+        <Leaderboard />
 
         {/* Footer */}
         <footer className="text-center text-[10px] text-orange-300/30 pb-4 space-y-1">
