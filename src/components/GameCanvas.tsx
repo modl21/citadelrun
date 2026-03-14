@@ -224,14 +224,13 @@ export function GameCanvas({ onGameOver, isPlaying, isMobile }: GameCanvasProps)
         }}
       />
 
-      {/* Mobile Controls Overlay */}
+      {/* Mobile Controls Under-Canvas */}
       {isPlaying && isMobile && (
-        <div className="absolute inset-0 z-10 pointer-events-none touch-none select-none">
-          {/* Left tap zone — Jump */}
+        <div className="mt-3 grid grid-cols-2 gap-2 touch-none select-none">
           <button
             type="button"
             aria-label="Jump"
-            className="absolute left-0 bottom-0 h-[44%] w-[46%] pointer-events-auto rounded-tr-2xl bg-gradient-to-tr from-amber-500/16 via-amber-400/7 to-transparent active:from-amber-500/28 active:via-amber-400/12 transition-colors"
+            className="h-14 rounded-lg border border-amber-300/35 bg-amber-500/16 active:bg-amber-500/28 text-amber-100/90 font-pixel text-[10px] tracking-wider shadow-[0_8px_20px_rgba(0,0,0,0.28)] transition-colors"
             onTouchStart={handleTouchStartJump}
             onTouchEnd={handleTouchEndJump}
             onTouchCancel={handleTouchEndJump}
@@ -239,16 +238,13 @@ export function GameCanvas({ onGameOver, isPlaying, isMobile }: GameCanvasProps)
             onMouseUp={handleTouchEndJump}
             onMouseLeave={handleTouchEndJump}
           >
-            <span className="absolute bottom-3 left-3 px-2.5 py-1 rounded-md bg-black/35 border border-amber-300/25 text-amber-100/90 font-pixel text-[9px] tracking-wider pointer-events-none">
-              JUMP
-            </span>
+            JUMP
           </button>
 
-          {/* Right tap zone — Fire */}
           <button
             type="button"
             aria-label="Fire"
-            className="absolute right-0 bottom-0 h-[44%] w-[46%] pointer-events-auto rounded-tl-2xl bg-gradient-to-tl from-red-500/16 via-red-400/7 to-transparent active:from-red-500/28 active:via-red-400/12 transition-colors"
+            className="h-14 rounded-lg border border-red-300/35 bg-red-500/16 active:bg-red-500/28 text-red-100/90 font-pixel text-[10px] tracking-wider shadow-[0_8px_20px_rgba(0,0,0,0.28)] transition-colors"
             onTouchStart={handleTouchStartShoot}
             onTouchEnd={handleTouchEndShoot}
             onTouchCancel={handleTouchEndShoot}
@@ -256,14 +252,11 @@ export function GameCanvas({ onGameOver, isPlaying, isMobile }: GameCanvasProps)
             onMouseUp={handleTouchEndShoot}
             onMouseLeave={handleTouchEndShoot}
           >
-            <span className="absolute bottom-3 right-3 px-2.5 py-1 rounded-md bg-black/35 border border-red-300/25 text-red-100/90 font-pixel text-[9px] tracking-wider pointer-events-none">
-              FIRE
-            </span>
+            FIRE
           </button>
 
-          {/* Minimal helper text */}
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[8px] font-pixel text-orange-200/45 whitespace-nowrap pointer-events-none">
-            TAP LEFT TO JUMP • HOLD RIGHT TO FIRE
+          <div className="col-span-2 text-center text-[8px] font-pixel text-orange-200/45 pt-0.5">
+            TAP BELOW THE SCREEN TO PLAY
           </div>
         </div>
       )}
