@@ -192,7 +192,7 @@ export function PaymentGate({ open, onPaid, onClose }: PaymentGateProps) {
             INSERT COIN
           </DialogTitle>
           <DialogDescription className="text-center text-muted-foreground text-sm">
-            Zap {PAYMENT_AMOUNT_SATS} sats to {PAYMENT_RECIPIENT} for 1 life
+            ZAP {PAYMENT_AMOUNT_SATS} SATS FOR ONE LIFE
           </DialogDescription>
           <div className="flex justify-center pt-1">
             <Tooltip>
