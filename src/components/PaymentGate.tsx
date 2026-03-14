@@ -56,19 +56,6 @@ export function PaymentGate({ open, onPaid, onClose }: PaymentGateProps) {
     return () => { activeRef.current = false; };
   }, []);
 
-  /**
-   * Poll Nostr relays for a kind 9735 zap receipt that matches our zap request.
-   *
-   * Per NIP-57, the zap receipt:
-   *  - has kind 9735
-   *  - MUST include a `p` tag with the recipient pubkey
-   *  - MUST include a `P` tag with the sender (zap requester) pubkey
-   *  - MUST include a `description` tag with the JSON of our zap request
-   *  - MUST include a `bolt11` tag with the invoice
-   *
-   * We filter by #p (recipient) to narrow the search, then match by bolt11 or
-   * by the zap request id inside the description tag.
-   */
   const startVerification = useCallback((gameInvoice: GameInvoice, address: string) => {
     stopVerification();
     activeRef.current = true;
@@ -86,8 +73,6 @@ export function PaymentGate({ open, onPaid, onClose }: PaymentGateProps) {
     const zapRequestId = gameInvoice.zapRequest!.id;
     const bolt11 = gameInvoice.bolt11;
 
-    // Filter zap receipts by the recipient's p tag — this is indexed by relays
-    // so it's efficient and won't return unrelated zap receipts
     const filter = [{
       kinds: [9735],
       '#p': [recipientPubkey],
@@ -102,14 +87,12 @@ export function PaymentGate({ open, onPaid, onClose }: PaymentGateProps) {
         const events = await nostr.query(filter, { signal: AbortSignal.timeout(8000) });
 
         for (const event of events) {
-          // Match 1: bolt11 tag matches our invoice exactly
           const bolt11Tag = event.tags.find(([n]) => n === 'bolt11')?.[1];
           if (bolt11Tag === bolt11) {
             onSettled();
             return;
           }
 
-          // Match 2: description tag contains our zap request
           const descTag = event.tags.find(([n]) => n === 'description')?.[1];
           if (descTag) {
             try {
@@ -132,7 +115,6 @@ export function PaymentGate({ open, onPaid, onClose }: PaymentGateProps) {
       }
     }
 
-    // First poll after a short delay to allow payment propagation
     setTimeout(poll, 3000);
   }, [nostr, stopVerification, onPaid]);
 
@@ -154,15 +136,13 @@ export function PaymentGate({ open, onPaid, onClose }: PaymentGateProps) {
       const dataUrl = await qrcode.toDataURL(gameInvoice.bolt11.toUpperCase(), {
         width: 280,
         margin: 2,
-        color: { dark: '#22c55e', light: '#0a0a0f' },
+        color: { dark: '#22d3ee', light: '#0a0914' },
       });
       setQrDataUrl(dataUrl);
 
-      // Try WebLN auto-pay first
       if (isWebLNAvailable()) {
         const paid = await payWithWebLN(gameInvoice.bolt11);
         if (paid) {
-          // WebLN paid — still wait for zap receipt to verify
           startVerification(gameInvoice, trimmed);
           setStep('invoice');
           return;
@@ -185,21 +165,20 @@ export function PaymentGate({ open, onPaid, onClose }: PaymentGateProps) {
     setTimeout(() => setCopied(false), 2000);
   }, [invoice]);
 
-  // Only allow closing on the address step — once an invoice is shown, lock the dialog
   const handleOpenChange = useCallback((o: boolean) => {
-    if (!o && step === 'invoice') return; // blocked
+    if (!o && step === 'invoice') return;
     if (!o) onClose();
   }, [step, onClose]);
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
-        className={`bg-[#0a0a0f] border-primary/30 max-w-sm mx-auto ${step === 'invoice' ? '[&>button:last-of-type]:hidden' : ''}`}
+        className={`bg-[#0a0914] border-cyan-500/30 max-w-sm mx-auto ${step === 'invoice' ? '[&>button:last-of-type]:hidden' : ''}`}
         onEscapeKeyDown={(e) => { if (step === 'invoice') e.preventDefault(); }}
         onInteractOutside={(e) => { if (step === 'invoice') e.preventDefault(); }}
       >
         <DialogHeader>
-          <DialogTitle className="font-pixel text-sm text-primary text-center tracking-wider">
+          <DialogTitle className="font-pixel text-sm text-cyan-400 text-center tracking-wider">
             INSERT COIN
           </DialogTitle>
           <DialogDescription className="text-center text-muted-foreground text-sm">
@@ -218,7 +197,7 @@ export function PaymentGate({ open, onPaid, onClose }: PaymentGateProps) {
                 value={lightningAddress}
                 onChange={(e) => setLightningAddress(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSubmitAddress()}
-                className="bg-secondary/50 border-primary/20 text-foreground placeholder:text-muted-foreground/50 focus:border-primary/50"
+                className="bg-secondary/50 border-cyan-500/20 text-foreground placeholder:text-muted-foreground/50 focus:border-cyan-500/50"
                 autoFocus
               />
               <p className="text-[10px] text-muted-foreground/60">
@@ -233,7 +212,7 @@ export function PaymentGate({ open, onPaid, onClose }: PaymentGateProps) {
             <Button
               onClick={handleSubmitAddress}
               disabled={loading || !lightningAddress.trim()}
-              className="w-full bg-primary text-primary-foreground font-pixel text-xs hover:bg-primary/90 h-12"
+              className="w-full bg-cyan-500 text-black font-pixel text-xs hover:bg-cyan-400 h-12"
             >
               {loading ? (
                 <Loader2 className="size-4 animate-spin mr-2" />
@@ -249,7 +228,7 @@ export function PaymentGate({ open, onPaid, onClose }: PaymentGateProps) {
           <div className="space-y-4 pt-2">
             {qrDataUrl && (
               <div className="flex justify-center">
-                <div className="p-2 rounded-lg border border-primary/20 bg-[#0a0a0f]">
+                <div className="p-2 rounded-lg border border-cyan-500/20 bg-[#0a0914]">
                   <img src={qrDataUrl} alt="Lightning Invoice QR" className="w-[280px] h-[280px]" />
                 </div>
               </div>
@@ -259,15 +238,15 @@ export function PaymentGate({ open, onPaid, onClose }: PaymentGateProps) {
               <Input
                 readOnly
                 value={invoice.bolt11.substring(0, 32) + '...'}
-                className="bg-secondary/50 border-primary/20 text-foreground text-xs font-mono"
+                className="bg-secondary/50 border-cyan-500/20 text-foreground text-xs font-mono"
               />
               <Button
                 onClick={handleCopyInvoice}
                 variant="outline"
                 size="icon"
-                className="border-primary/20 shrink-0"
+                className="border-cyan-500/20 shrink-0"
               >
-                {copied ? <Check className="size-4 text-primary" /> : <Copy className="size-4" />}
+                {copied ? <Check className="size-4 text-cyan-400" /> : <Copy className="size-4" />}
               </Button>
             </div>
 
@@ -276,9 +255,9 @@ export function PaymentGate({ open, onPaid, onClose }: PaymentGateProps) {
             )}
 
             <div className="space-y-3">
-              <div className="flex items-center justify-center gap-2 py-3 rounded-md bg-secondary/30 border border-primary/10">
-                <Loader2 className="size-4 text-primary animate-spin" />
-                <span className="font-pixel text-[10px] text-primary tracking-wider">
+              <div className="flex items-center justify-center gap-2 py-3 rounded-md bg-secondary/30 border border-cyan-500/10">
+                <Loader2 className="size-4 text-cyan-400 animate-spin" />
+                <span className="font-pixel text-[10px] text-cyan-400 tracking-wider">
                   {verifying ? 'WAITING FOR PAYMENT...' : 'PREPARING...'}
                 </span>
               </div>

@@ -1,59 +1,83 @@
-// Game constants
-export const GAME_WIDTH = 400;
-export const GAME_HEIGHT = 600;
+// ─── Canvas ───────────────────────────────────────────────────────────────────
+export const GAME_WIDTH = 480;
+export const GAME_HEIGHT = 260;
 
-// Player
-export const PLAYER_WIDTH = 36;
-export const PLAYER_HEIGHT = 28;
-export const PLAYER_SPEED = 5;
-export const PLAYER_Y_OFFSET = 50; // from bottom
+// ─── Ground ───────────────────────────────────────────────────────────────────
+export const GROUND_Y = GAME_HEIGHT - 40; // y where the ground surface is
+export const GROUND_HEIGHT = 40;
 
-// Bullets
-export const BULLET_WIDTH = 3;
-export const BULLET_HEIGHT = 12;
-export const BULLET_SPEED = 8;
-export const BULLET_COOLDOWN = 250; // ms between shots
+// ─── Player ───────────────────────────────────────────────────────────────────
+export const PLAYER_X = 72;             // fixed horizontal position
+export const PLAYER_WIDTH = 28;
+export const PLAYER_HEIGHT = 36;
+/** y when standing on ground */
+export const PLAYER_GROUND_Y = GROUND_Y - PLAYER_HEIGHT;
 
-// Enemies
-export const ENEMY_WIDTH = 30;
-export const ENEMY_HEIGHT = 24;
-export const ENEMY_COLS = 8;
-export const ENEMY_H_SPACING = 44;
-export const ENEMY_V_SPACING = 38;
-export const ENEMY_START_Y = 40;
-export const ENEMY_DROP_AMOUNT = 16;
-export const ENEMY_BULLET_SPEED = 3.5;
+// ─── Physics ──────────────────────────────────────────────────────────────────
+export const GRAVITY = 0.55;
+export const JUMP_VELOCITY = -11.5;
 
-// Difficulty curve
-export const WAVE_0_ROWS = 2;         // start with just 2 rows
-export const MAX_ROWS = 5;            // grow to 5 rows by wave 6+
-export const SPEED_BASE = 0.25;       // very slow at start
-export const SPEED_WAVE_SCALE = 0.06; // small bump per wave
-export const SPEED_KILL_SCALE = 1.8;  // speed multiplier when few enemies left
-export const SHOOT_BASE = 0.0005;     // very rare shooting at start
-export const SHOOT_WAVE_SCALE = 0.0003; // more shooting per wave
-export const SHOOT_KILL_SCALE = 1.5;  // shoot more when fewer enemies remain
+// ─── Bullets ──────────────────────────────────────────────────────────────────
+export const BULLET_WIDTH = 14;
+export const BULLET_HEIGHT = 5;
+export const BULLET_SPEED = 12;         // px per frame, rightward
+export const BULLET_COOLDOWN = 300;     // ms between shots
 
-// Scoring
-export const SCORE_PER_ENEMY = 10;
-export const SCORE_PER_WAVE_BONUS = 50;
+// ─── Obstacles ────────────────────────────────────────────────────────────────
+/** Min/max pixel gap between obstacle spawns */
+export const OBSTACLE_GAP_MIN = 260;
+export const OBSTACLE_GAP_MAX = 520;
 
-// Colors
-export const COLOR_PLAYER = '#22c55e';
-export const COLOR_BULLET = '#fbbf24';
-export const COLOR_ENEMY_1 = '#ef4444';
-export const COLOR_ENEMY_2 = '#f97316';
-export const COLOR_ENEMY_3 = '#a855f7';
-export const COLOR_ENEMY_4 = '#06b6d4';
-export const COLOR_ENEMY_5 = '#ec4899';
-export const COLOR_ENEMY_BULLET = '#ef4444';
-export const COLOR_STARS = '#ffffff';
-export const COLOR_BG = '#0a0a0f';
+// jump-only obstacles: spikes — cannot be shot
+export const SPIKE_WIDTH = 28;
+export const SPIKE_HEIGHT = 32;
 
-// Payment
+// shoot-1 obstacle: crate
+export const CRATE_WIDTH = 30;
+export const CRATE_HEIGHT = 30;
+
+// shoot-2 obstacle: barrel
+export const BARREL_WIDTH = 28;
+export const BARREL_HEIGHT = 36;
+
+// shoot-3 obstacle: wall segment
+export const WALL_WIDTH = 22;
+export const WALL_HEIGHT = 52;
+
+// ─── Background parallax ──────────────────────────────────────────────────────
+export const PARALLAX_FAR_SPEED = 0.15;
+export const PARALLAX_MID_SPEED = 0.45;
+
+// ─── Difficulty ───────────────────────────────────────────────────────────────
+export const INITIAL_SPEED = 3.2;           // px / frame at start
+export const MAX_SPEED = 10;                // px / frame cap
+export const SPEED_RAMP_PER_SECOND = 0.014; // how much speed grows per second
+export const DIFFICULTY_RAMP_INTERVAL = 10; // seconds between difficulty bumps
+
+// ─── Scoring ──────────────────────────────────────────────────────────────────
+export const SCORE_PER_SECOND = 1;          // survival score
+export const SCORE_SHOOT1 = 15;             // destroying 1-hit obstacle
+export const SCORE_SHOOT2 = 30;             // destroying 2-hit obstacle
+export const SCORE_SHOOT3 = 50;             // destroying 3-hit obstacle
+export const SCORE_HIT = 5;                 // partial hit on multi-hp obstacle
+
+// ─── Colors ───────────────────────────────────────────────────────────────────
+export const COLOR_BG_TOP = '#0a0914';
+export const COLOR_BG_BOTTOM = '#0f1a2e';
+export const COLOR_GROUND = '#1a2640';
+export const COLOR_GROUND_LINE = '#2a3f60';
+export const COLOR_PLAYER = '#22d3ee';      // cyan
+export const COLOR_PLAYER_ACCENT = '#f0abfc'; // pink accent
+export const COLOR_BULLET = '#fde047';      // yellow
+export const COLOR_SPIKE = '#ef4444';       // red — must jump
+export const COLOR_CRATE = '#84cc16';       // lime — 1-shot
+export const COLOR_BARREL = '#f97316';      // orange — 2-shot
+export const COLOR_WALL = '#a855f7';        // purple — 3-shot
+export const COLOR_HIT_FLASH = '#ffffff';
+export const COLOR_PARTICLE_DUST = '#94a3b8';
+
+// ─── Payment / Nostr ─────────────────────────────────────────────────────────
 export const PAYMENT_AMOUNT_SATS = 100;
 export const PAYMENT_RECIPIENT = 'tony@npubx.cash';
-
-// Nostr
-export const GAME_SCORE_KIND = 1447;
-export const GAME_TAG = 'sats-invaders';
+export const GAME_SCORE_KIND = 1448;
+export const GAME_TAG = 'citadel-run';

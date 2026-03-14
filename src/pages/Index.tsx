@@ -1,11 +1,10 @@
 import { useState, useCallback, useRef } from 'react';
 import { useSeoMeta } from '@unhead/react';
-import { Zap, Gamepad2, Smartphone, Keyboard, Play } from 'lucide-react';
+import { Zap, Play, Smartphone, Keyboard } from 'lucide-react';
 import type { NSecSigner } from '@nostrify/nostrify';
 
 import { Button } from '@/components/ui/button';
 import { GameCanvas } from '@/components/GameCanvas';
-import { TouchControls } from '@/components/TouchControls';
 import { PaymentGate } from '@/components/PaymentGate';
 import { Leaderboard } from '@/components/Leaderboard';
 import { WeeklyWinnerBanner } from '@/components/WeeklyWinnerBanner';
@@ -17,17 +16,15 @@ import type { GameInvoice } from '@/lib/lightning';
 
 const Index = () => {
   useSeoMeta({
-    title: 'Sats Invaders - Pay Sats. Blast Aliens. Top the Leaderboard.',
-    description: 'A retro arcade shooter powered by Bitcoin Lightning. Pay 100 sats for one life, compete for the weekly high score, and claim glory on the Nostr-powered leaderboard.',
-    ogTitle: 'Sats Invaders',
-    ogDescription: '100 Sats. One Life. Weekly Leaderboard.',
-    ogImage: 'https://blossom.ditto.pub/fd06b60dd00a90285a77eda43e7c738a9baf93639f64179eff8f95282efd463a.jpeg',
+    title: 'Citadel Run - One Life. Infinite Run. Pay Sats to Play.',
+    description: 'An endless runner powered by Bitcoin Lightning. Jump obstacles, shoot barriers, survive as long as you can. Pay 100 sats for one life.',
+    ogTitle: 'Citadel Run',
+    ogDescription: '100 Sats. One Life. Run Forever.',
     ogType: 'website',
-    ogSiteName: 'Sats Invaders',
+    ogSiteName: 'Citadel Run',
     twitterCard: 'summary_large_image',
-    twitterTitle: 'Sats Invaders',
-    twitterDescription: '100 Sats. One Life. Weekly Leaderboard.',
-    twitterImage: 'https://blossom.ditto.pub/fd06b60dd00a90285a77eda43e7c738a9baf93639f64179eff8f95282efd463a.jpeg',
+    twitterTitle: 'Citadel Run',
+    twitterDescription: '100 Sats. One Life. Run Forever.',
   });
 
   const isMobile = useIsMobile();
@@ -36,7 +33,6 @@ const Index = () => {
   const [lightningAddress, setLightningAddress] = useState('');
   const [finalScore, setFinalScore] = useState(0);
   const signerRef = useRef<NSecSigner | null>(null);
-  const keysRef = useRef({ left: false, right: false, shoot: false });
   const { mutateAsync: publishScore, isPending: isPublishing } = usePublishScore();
 
   const handleStartGame = useCallback(() => {
@@ -78,10 +74,10 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-full bg-[#0a0a0f] text-foreground overflow-y-auto">
-      {/* Scanline overlay */}
-      <div className="fixed inset-0 pointer-events-none z-50 opacity-[0.03]">
-        <div className="w-full h-[200%] bg-[repeating-linear-gradient(transparent,transparent_2px,rgba(255,255,255,0.03)_2px,rgba(255,255,255,0.03)_4px)] animate-scanline" />
+    <div className="min-h-full bg-[#0a0914] text-foreground overflow-y-auto">
+      {/* Subtle scanline overlay */}
+      <div className="fixed inset-0 pointer-events-none z-50 opacity-[0.02]">
+        <div className="w-full h-[200%] bg-[repeating-linear-gradient(transparent,transparent_2px,rgba(255,255,255,0.02)_2px,rgba(255,255,255,0.02)_4px)] animate-scanline" />
       </div>
 
       <div className="relative z-10 flex flex-col items-center min-h-full px-4 py-6 gap-5">
@@ -90,11 +86,11 @@ const Index = () => {
 
         {/* Title */}
         <div className="text-center space-y-2">
-          <h1 className="font-pixel text-xl md:text-2xl text-primary tracking-wider animate-float">
-            SATS INVADERS
+          <h1 className="font-pixel text-xl md:text-2xl text-cyan-400 tracking-wider animate-float">
+            CITADEL RUN
           </h1>
           <p className="text-xs text-muted-foreground/80 max-w-xs mx-auto">
-            Pay sats. Blast aliens. Top the leaderboard.
+            One life. Infinite run. Survive the gauntlet.
           </p>
         </div>
 
@@ -103,7 +99,6 @@ const Index = () => {
           <GameCanvas
             onGameOver={handleGameOver}
             isPlaying={phase === 'playing'}
-            keysRef={keysRef}
           />
 
           {/* Idle overlay */}
@@ -112,7 +107,13 @@ const Index = () => {
               <div className="text-center space-y-5 p-6">
                 <div className="flex justify-center">
                   <div className="relative">
-                    <Gamepad2 className="size-12 text-primary animate-float" />
+                    <div className="size-14 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center animate-float">
+                      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" className="text-cyan-400">
+                        <path d="M6 22L14 6L22 22H6Z" fill="currentColor" opacity="0.4" />
+                        <path d="M10 22L14 10L18 22H10Z" fill="currentColor" />
+                        <circle cx="14" cy="8" r="3" fill="currentColor" />
+                      </svg>
+                    </div>
                     <div className="absolute -top-1 -right-1 size-4 bg-accent rounded-full flex items-center justify-center">
                       <Zap className="size-2.5 text-accent-foreground fill-accent-foreground" />
                     </div>
@@ -123,29 +124,32 @@ const Index = () => {
                   <p className="font-pixel text-xs text-foreground tracking-wider">
                     100 SATS = 1 LIFE
                   </p>
-                  <p className="text-[10px] text-muted-foreground max-w-[200px] mx-auto">
-                    One life. One chance. Make it count.
+                  <p className="text-[10px] text-muted-foreground max-w-[220px] mx-auto">
+                    Jump or shoot your way through. One hit and it&apos;s over.
                   </p>
                 </div>
 
                 <Button
                   onClick={handleStartGame}
-                  className="bg-primary text-primary-foreground font-pixel text-xs hover:bg-primary/90 h-12 px-8 shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)] transition-shadow"
+                  className="bg-cyan-500 text-black font-pixel text-xs hover:bg-cyan-400 h-12 px-8 shadow-[0_0_20px_rgba(34,211,238,0.25)] hover:shadow-[0_0_30px_rgba(34,211,238,0.4)] transition-shadow"
                 >
                   <Zap className="size-4 mr-2" />
                   INSERT COIN
                 </Button>
 
                 {/* Controls hint */}
-                <div className="flex items-center justify-center gap-4 text-muted-foreground/50">
-                  <div className="flex items-center gap-1">
-                    <Keyboard className="size-3" />
-                    <span className="text-[8px] font-pixel">ARROWS + SPACE</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Smartphone className="size-3" />
-                    <span className="text-[8px] font-pixel">ON-SCREEN BUTTONS</span>
-                  </div>
+                <div className="flex flex-col items-center gap-1.5 text-muted-foreground/50">
+                  {isMobile ? (
+                    <div className="flex items-center gap-1.5">
+                      <Smartphone className="size-3" />
+                      <span className="text-[8px] font-pixel">TAP = JUMP &middot; DOUBLE TAP = SHOOT</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1.5">
+                      <Keyboard className="size-3" />
+                      <span className="text-[8px] font-pixel">SPACE = JUMP &middot; DOUBLE SPACE = SHOOT</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -156,7 +160,7 @@ const Index = () => {
             <div className="absolute inset-0 flex items-center justify-center z-10 bg-black/60 backdrop-blur-[2px] rounded-lg">
               <div className="text-center space-y-6 p-6">
                 <div className="space-y-2">
-                  <p className="font-pixel text-[10px] text-primary/70 tracking-wider">
+                  <p className="font-pixel text-[10px] text-cyan-400/70 tracking-wider">
                     PAYMENT RECEIVED
                   </p>
                   <p className="font-pixel text-sm text-foreground tracking-wider">
@@ -166,19 +170,19 @@ const Index = () => {
 
                 <Button
                   onClick={handleLaunchGame}
-                  className="bg-primary text-primary-foreground font-pixel text-sm hover:bg-primary/90 h-14 px-10 shadow-[0_0_30px_rgba(34,197,94,0.4)] hover:shadow-[0_0_40px_rgba(34,197,94,0.6)] transition-shadow animate-pulse-glow"
+                  className="bg-cyan-500 text-black font-pixel text-sm hover:bg-cyan-400 h-14 px-10 shadow-[0_0_30px_rgba(34,211,238,0.3)] hover:shadow-[0_0_40px_rgba(34,211,238,0.5)] transition-shadow animate-pulse-glow"
                 >
                   <Play className="size-5 mr-2 fill-current" />
-                  START
+                  RUN
                 </Button>
 
                 {isMobile ? (
                   <p className="text-[9px] text-muted-foreground/50 font-pixel">
-                    USE ON-SCREEN BUTTONS TO PLAY
+                    TAP = JUMP &middot; DOUBLE TAP = SHOOT
                   </p>
                 ) : (
                   <p className="text-[9px] text-muted-foreground/50 font-pixel">
-                    ARROWS TO MOVE &middot; SPACE TO FIRE
+                    SPACE = JUMP &middot; DOUBLE SPACE = SHOOT
                   </p>
                 )}
               </div>
@@ -195,10 +199,27 @@ const Index = () => {
           )}
         </div>
 
-        {/* Touch controls — visible on mobile while playing */}
-        {isMobile && phase === 'playing' && (
-          <TouchControls keysRef={keysRef} />
-        )}
+        {/* Obstacle legend */}
+        <div className="w-full max-w-md mx-auto">
+          <div className="flex items-center justify-center gap-4 text-[8px] font-pixel text-muted-foreground/60 flex-wrap">
+            <span className="flex items-center gap-1.5">
+              <span className="inline-block w-2 h-2 bg-red-500 rotate-45" />
+              JUMP OVER
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="inline-block w-2 h-2 bg-lime-500" />
+              1 SHOT
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="inline-block w-2 h-2 bg-orange-500 rounded-sm" />
+              2 SHOTS
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="inline-block w-2 h-2 bg-purple-500" />
+              3 SHOTS
+            </span>
+          </div>
+        </div>
 
         {/* Leaderboard */}
         <Leaderboard />
@@ -207,7 +228,7 @@ const Index = () => {
         <footer className="text-center text-[10px] text-muted-foreground/40 pb-4 space-y-1">
           <p>
             Scores stored on{' '}
-            <span className="text-primary/50">Nostr</span>
+            <span className="text-cyan-400/50">Nostr</span>
             {' '}&middot;{' '}
             Payments via{' '}
             <span className="text-accent/50">Lightning</span>
@@ -218,7 +239,7 @@ const Index = () => {
               href="https://shakespeare.diy"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary/50 hover:text-primary/80 transition-colors"
+              className="text-cyan-400/50 hover:text-cyan-400/80 transition-colors"
             >
               Shakespeare
             </a>

@@ -6,6 +6,8 @@ export interface Position {
 export interface Player extends Position {
   width: number;
   height: number;
+  vy: number; // vertical velocity (for jumping)
+  isGrounded: boolean;
 }
 
 export interface Bullet extends Position {
@@ -14,11 +16,17 @@ export interface Bullet extends Position {
   active: boolean;
 }
 
-export interface Enemy extends Position {
+export type ObstacleType = 'jump' | 'shoot1' | 'shoot2' | 'shoot3';
+
+export interface Obstacle extends Position {
   width: number;
   height: number;
-  alive: boolean;
-  type: number; // 0-3 for different visual types
+  type: ObstacleType;
+  hp: number; // hit points remaining
+  maxHp: number;
+  active: boolean;
+  /** Visual flash timer when hit */
+  hitFlash: number;
 }
 
 export interface Star {
@@ -40,19 +48,34 @@ export interface Particle {
   size: number;
 }
 
+export interface GroundTile {
+  x: number;
+  type: number; // visual variant
+}
+
 export interface GameState {
   player: Player;
-  playerBullets: Bullet[];
-  enemyBullets: Bullet[];
-  enemies: Enemy[];
+  bullets: Bullet[];
+  obstacles: Obstacle[];
   stars: Star[];
   particles: Particle[];
+  groundTiles: GroundTile[];
   score: number;
-  wave: number;
-  enemyDirection: 1 | -1;
+  destroyScore: number; // bonus points from destroying obstacles
+  survivalTime: number; // seconds survived
+  gameSpeed: number; // current scrolling speed (increases over time)
   gameOver: boolean;
   lastBulletTime: number;
   screenShake: number;
+  distanceTraveled: number;
+  /** Next obstacle spawn distance threshold */
+  nextObstacleAt: number;
+  /** Difficulty level (increases over time) */
+  difficulty: number;
+  /** Frame counter */
+  frame: number;
+  /** Time the game started (performance.now) */
+  startTime: number;
 }
 
 export type GamePhase = 'idle' | 'paying' | 'ready' | 'playing' | 'gameOver';

@@ -1,4 +1,4 @@
-import { Zap, RotateCcw, Loader2 } from 'lucide-react';
+import { Zap, RotateCcw, Loader2, Skull } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
@@ -10,9 +10,13 @@ interface GameOverOverlayProps {
 
 export function GameOverOverlay({ score, isPublishing, onPlayAgain }: GameOverOverlayProps) {
   return (
-    <div className="absolute inset-0 flex items-center justify-center z-10 bg-black/60 backdrop-blur-sm rounded-lg">
+    <div className="absolute inset-0 flex items-center justify-center z-10 bg-black/70 backdrop-blur-sm rounded-lg">
       <div className="text-center space-y-4 p-6">
-        <h2 className="font-pixel text-lg text-destructive tracking-wider animate-pulse">
+        <div className="flex justify-center">
+          <Skull className="size-8 text-red-500 animate-pulse" />
+        </div>
+
+        <h2 className="font-pixel text-lg text-red-500 tracking-wider">
           GAME OVER
         </h2>
 
@@ -35,7 +39,7 @@ export function GameOverOverlay({ score, isPublishing, onPlayAgain }: GameOverOv
 
         <Button
           onClick={onPlayAgain}
-          className="bg-primary text-primary-foreground font-pixel text-xs hover:bg-primary/90 h-10 px-6"
+          className="bg-cyan-500 text-black font-pixel text-xs hover:bg-cyan-400 h-10 px-6"
         >
           <RotateCcw className="size-3.5 mr-2" />
           PLAY AGAIN (100 SATS)

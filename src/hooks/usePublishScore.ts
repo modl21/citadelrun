@@ -29,7 +29,7 @@ export function usePublishScore() {
           ['score', String(score)],
           ['lightning', lightning],
           ['t', GAME_TAG],
-          ['alt', 'Sats Invaders game score'],
+          ['alt', 'Citadel Run game score'],
         ],
         created_at: Math.floor(Date.now() / 1000),
       });

@@ -11,12 +11,12 @@ export function Leaderboard() {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="border border-primary/20 rounded-lg bg-secondary/20 backdrop-blur overflow-hidden">
+      <div className="border border-cyan-500/20 rounded-lg bg-secondary/20 backdrop-blur overflow-hidden">
         {/* Header */}
-        <div className="px-4 py-3 border-b border-primary/10 flex items-center justify-between">
+        <div className="px-4 py-3 border-b border-cyan-500/10 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Trophy className="size-4 text-accent" />
-            <h2 className="font-pixel text-[10px] text-primary tracking-wider">TOP 10</h2>
+            <h2 className="font-pixel text-[10px] text-cyan-400 tracking-wider">TOP 10</h2>
           </div>
           <div className="flex items-center gap-1.5 text-muted-foreground">
             <Clock className="size-3" />
@@ -27,7 +27,7 @@ export function Leaderboard() {
         </div>
 
         {/* Entries */}
-        <div className="divide-y divide-primary/5">
+        <div className="divide-y divide-cyan-500/5">
           {isLoading ? (
             Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className="px-4 py-2.5 flex items-center gap-3">
@@ -43,7 +43,7 @@ export function Leaderboard() {
           ) : (
             <div className="px-4 py-8 text-center">
               <p className="text-muted-foreground text-xs font-pixel">NO SCORES YET</p>
-              <p className="text-muted-foreground/60 text-[10px] mt-1">Be the first to play!</p>
+              <p className="text-muted-foreground/60 text-[10px] mt-1">Be the first to run!</p>
             </div>
           )}
         </div>
@@ -75,10 +75,10 @@ function LeaderboardRow({ entry, rank }: { entry: LeaderboardEntry; rank: number
             rel="noopener noreferrer"
             className="flex items-center gap-1 group min-w-0"
           >
-            <span className="text-sm text-primary truncate group-hover:underline underline-offset-2">
+            <span className="text-sm text-cyan-400 truncate group-hover:underline underline-offset-2">
               {entry.lightning}
             </span>
-            <ExternalLink className="size-3 text-primary/50 shrink-0 group-hover:text-primary transition-colors" />
+            <ExternalLink className="size-3 text-cyan-400/50 shrink-0 group-hover:text-cyan-400 transition-colors" />
           </a>
         ) : (
           <span className="text-sm text-foreground truncate block">
