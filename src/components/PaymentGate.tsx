@@ -75,6 +75,7 @@ export function PaymentGate({ open, onPaid, onClose }: PaymentGateProps) {
 
     const filter = [{
       kinds: [9735],
+      authors: [recipientPubkey],
       '#p': [recipientPubkey],
       since: sinceTimestamp,
       limit: 20,
@@ -87,6 +88,9 @@ export function PaymentGate({ open, onPaid, onClose }: PaymentGateProps) {
         const events = await nostr.query(filter, { signal: AbortSignal.timeout(8000) });
 
         for (const event of events) {
+          // Hard guard: only trust receipts authored by the recipient LNURL pubkey
+          if (event.pubkey !== recipientPubkey) continue;
+
           const bolt11Tag = event.tags.find(([n]) => n === 'bolt11')?.[1];
           if (bolt11Tag === bolt11) {
             onSettled();
@@ -96,8 +100,13 @@ export function PaymentGate({ open, onPaid, onClose }: PaymentGateProps) {
           const descTag = event.tags.find(([n]) => n === 'description')?.[1];
           if (descTag) {
             try {
-              const embedded = JSON.parse(descTag);
-              if (embedded.id === zapRequestId) {
+              const embedded = JSON.parse(descTag) as {
+                id?: string;
+                tags?: string[][];
+              };
+
+              const hasRecipientTag = embedded.tags?.some(([name, value]) => name === 'p' && value === recipientPubkey);
+              if (embedded.id === zapRequestId && hasRecipientTag) {
                 onSettled();
                 return;
               }
@@ -182,7 +191,7 @@ export function PaymentGate({ open, onPaid, onClose }: PaymentGateProps) {
             INSERT COIN
           </DialogTitle>
           <DialogDescription className="text-center text-muted-foreground text-sm">
-            Pay {PAYMENT_AMOUNT_SATS} sats to {PAYMENT_RECIPIENT} for 1 life
+            Zap {PAYMENT_AMOUNT_SATS} sats to {PAYMENT_RECIPIENT} for 1 life
           </DialogDescription>
         </DialogHeader>
 
@@ -219,7 +228,7 @@ export function PaymentGate({ open, onPaid, onClose }: PaymentGateProps) {
               ) : (
                 <Zap className="size-4 mr-2" />
               )}
-              {loading ? 'GENERATING INVOICE...' : `PAY ${PAYMENT_AMOUNT_SATS} SATS`}
+              {loading ? 'GENERATING INVOICE...' : `ZAP ${PAYMENT_AMOUNT_SATS} SATS`}
             </Button>
           </div>
         )}
@@ -262,7 +271,7 @@ export function PaymentGate({ open, onPaid, onClose }: PaymentGateProps) {
                 </span>
               </div>
               <p className="text-[10px] text-center text-muted-foreground/50">
-                Pay the invoice — the game starts automatically once confirmed
+                Zap the invoice — the game starts automatically once confirmed
               </p>
             </div>
           </div>

@@ -74,6 +74,7 @@ export async function resolveLightningAddress(address: string): Promise<LNURLPay
 
 /**
  * Get a zap-formatted invoice for the game payment.
+ * Verifies LNURL metadata matches configured recipient expectations.
  */
 export async function getGameInvoice(relays: string[]): Promise<GameInvoice> {
   const lnurlPay = await resolveLightningAddress(PAYMENT_RECIPIENT);

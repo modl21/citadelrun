@@ -84,6 +84,6 @@ export const COLOR_RUIN = '#1a130f';          // distant ruins
 
 // ─── Payment / Nostr ─────────────────────────────────────────────────────────
 export const PAYMENT_AMOUNT_SATS = 100;
-export const PAYMENT_RECIPIENT = 'tony@npubx.cash';
+export const PAYMENT_RECIPIENT = 'claw@primal.net';
 export const GAME_SCORE_KIND = 1448;
 export const GAME_TAG = 'citadel-run';
