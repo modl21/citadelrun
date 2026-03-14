@@ -109,6 +109,20 @@ const Index = () => {
       <div className="fixed bottom-0 left-0 right-0 h-36 pointer-events-none z-0 bg-gradient-to-t from-orange-900/20 via-orange-800/10 to-transparent" />
 
       <div className="relative z-10 flex flex-col items-center min-h-full px-4 py-6 gap-5">
+        {/* Citadel Arcade Badge */}
+        <a 
+          href="https://citadelarcade.com" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="transition-transform hover:scale-105 active:scale-95 mb-2"
+        >
+          <div className="flex h-10 items-center justify-center rounded-sm bg-white px-3 shadow-[0_0_25px_rgba(255,255,255,0.1)]">
+            <span className="text-[13px] font-[900] tracking-tighter text-black uppercase whitespace-nowrap" style={{ fontFamily: 'Inter, sans-serif' }}>
+              CITADEL ARCADE
+            </span>
+          </div>
+        </a>
+
         {/* Weekly Winner Banner */}
         <WeeklyWinnerBanner />
 
