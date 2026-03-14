@@ -23,11 +23,11 @@ const Index = () => {
     ogType: 'website',
     ogSiteName: 'Citadel Run',
     ogUrl: 'https://citadelrun.com',
-    ogImage: 'https://citadelrun.com/citadelruns.png',
+    ogImage: 'https://citadelrun.com/citadelruns.jpg',
     twitterCard: 'summary_large_image',
     twitterTitle: 'Citadel Run',
     twitterDescription: 'One life. Infinite wasteland.',
-    twitterImage: 'https://citadelrun.com/citadelruns.png',
+    twitterImage: 'https://citadelrun.com/citadelruns.jpg',
   });
 
   const isMobile = useIsMobile();
