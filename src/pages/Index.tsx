@@ -208,7 +208,7 @@ const Index = () => {
                 <span className="w-[2px] h-2.5 bg-red-500" />
                 <span className="w-[2px] h-2 bg-red-600" />
               </span>
-              REBAR TRAP
+              BARBED WIRE
             </span>
             <span className="flex items-center gap-1.5">
               <span className="inline-block w-2.5 h-2.5 bg-yellow-800 border border-amber-500/40" />
@@ -216,11 +216,11 @@ const Index = () => {
             </span>
             <span className="flex items-center gap-1.5">
               <span className="inline-block w-2.5 h-2.5 bg-orange-800 rounded-[2px] border border-orange-400/35" />
-              FUEL DRUM (2) +10% SPD
+              FUEL (2) +10% SPD
             </span>
             <span className="flex items-center gap-1.5">
               <span className="inline-block w-2.5 h-2.5 bg-stone-700 border border-orange-200/20" />
-              SMALL FORT (3)
+              CITADEL (3)
             </span>
           </div>
         </div>

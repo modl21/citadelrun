@@ -28,7 +28,7 @@ export const BULLET_COOLDOWN = 300;     // ms between shots
 export const OBSTACLE_GAP_MIN = 260;
 export const OBSTACLE_GAP_MAX = 520;
 
-// jump-only obstacles: spikes — cannot be shot
+// jump-only obstacles: barbed wire — cannot be shot
 export const SPIKE_WIDTH = 28;
 export const SPIKE_HEIGHT = 32;
 
@@ -62,25 +62,25 @@ export const SCORE_SHOOT3 = 50;             // destroying 3-hit obstacle
 export const SCORE_HIT = 5;                 // partial hit on multi-hp obstacle
 
 // ─── Colors — Mad Max Wasteland ──────────────────────────────────────────────
-export const COLOR_BG_TOP = '#1a0a00';        // deep burnt orange-black sky
-export const COLOR_BG_BOTTOM = '#3d1a00';     // scorched horizon glow
-export const COLOR_GROUND = '#2a1800';        // cracked parched earth
-export const COLOR_GROUND_LINE = '#5c3010';   // dried crust surface line
-export const COLOR_GROUND_CRACK = '#1a0e00';  // crack details
-export const COLOR_PLAYER = '#e8a422';        // sun-baked amber hero
-export const COLOR_PLAYER_COAT = '#7c4a10';   // brown leather coat
-export const COLOR_PLAYER_ACCENT = '#ff6b1a'; // fire/ember orange
-export const COLOR_BULLET = '#ff9900';        // blazing amber shot
-export const COLOR_BULLET_TRAIL = '#ff4400';  // fire trail
-export const COLOR_SPIKE = '#cc2200';         // blood-red spikes — must jump
-export const COLOR_CRATE = '#8b6914';         // rusted tin crate — 1-shot
-export const COLOR_BARREL = '#b34000';        // corroded drum — 2-shot
-export const COLOR_WALL = '#4a3520';          // broken stone wall — 3-shot
-export const COLOR_HIT_FLASH = '#ffcc44';     // golden flash on hit
-export const COLOR_PARTICLE_DUST = '#c4793a'; // sand/dust particles
-export const COLOR_SUN = '#ff8800';           // scorching sun
-export const COLOR_MESA = '#2e1505';          // far mesa silhouette
-export const COLOR_RUIN = '#1e1005';          // distant ruins
+export const COLOR_BG_TOP = '#120d09';        // ashen dusk sky
+export const COLOR_BG_BOTTOM = '#2a1b12';     // dusty horizon haze
+export const COLOR_GROUND = '#21150f';        // dry, compacted earth
+export const COLOR_GROUND_LINE = '#3a281c';   // hard-packed surface edge
+export const COLOR_GROUND_CRACK = '#130d09';  // crack details
+export const COLOR_PLAYER = '#9f8b6d';        // sun-bleached gear tone
+export const COLOR_PLAYER_COAT = '#4a3a2d';   // weathered leather coat
+export const COLOR_PLAYER_ACCENT = '#b36a39'; // oxidized copper accent
+export const COLOR_BULLET = '#d8a15b';        // brass projectile
+export const COLOR_BULLET_TRAIL = '#8f5224';  // hot tracer trail
+export const COLOR_SPIKE = '#6d655b';         // rusted wire/metal hazard
+export const COLOR_CRATE = '#6b5a44';         // wrecked truck body rust
+export const COLOR_BARREL = '#7b4f2b';        // old fuel drum
+export const COLOR_WALL = '#514439';          // fortified scrap-concrete
+export const COLOR_HIT_FLASH = '#d4b07a';     // impact spark flash
+export const COLOR_PARTICLE_DUST = '#8b6a4d'; // dust particles
+export const COLOR_SUN = '#d67d42';           // sun through smog
+export const COLOR_MESA = '#2a1d16';          // far mesa silhouette
+export const COLOR_RUIN = '#1a130f';          // distant ruins
 
 // ─── Payment / Nostr ─────────────────────────────────────────────────────────
 export const PAYMENT_AMOUNT_SATS = 100;

@@ -34,9 +34,9 @@ function drawDustBand(
   offset: number,
 ) {
   const grad = ctx.createLinearGradient(0, y, 0, y + height);
-  grad.addColorStop(0, `rgba(255, 170, 95, ${alpha * 0.05})`);
-  grad.addColorStop(0.5, `rgba(255, 130, 55, ${alpha})`);
-  grad.addColorStop(1, `rgba(110, 55, 20, ${alpha * 0.08})`);
+  grad.addColorStop(0, `rgba(115, 86, 62, ${alpha * 0.08})`);
+  grad.addColorStop(0.45, `rgba(84, 62, 45, ${alpha * 0.75})`);
+  grad.addColorStop(1, `rgba(40, 29, 21, ${alpha * 0.18})`);
 
   ctx.fillStyle = grad;
   for (let i = -1; i <= 1; i++) {
@@ -78,9 +78,11 @@ function drawMesaLayer(
       ctx.closePath();
       ctx.fill();
 
-      // Cliff edge highlight
-      ctx.fillStyle = 'rgba(255, 183, 121, 0.08)';
-      ctx.fillRect(left + width * 0.12, topY + 8, 2, Math.max(6, GROUND_Y - topY - 14));
+      // Cliff edge weathering
+      ctx.fillStyle = 'rgba(154, 121, 96, 0.1)';
+      ctx.fillRect(left + width * 0.12, topY + 8, 1, Math.max(6, GROUND_Y - topY - 14));
+      ctx.fillStyle = 'rgba(20, 13, 8, 0.14)';
+      ctx.fillRect(left + width * 0.6, topY + 10, 1, Math.max(5, GROUND_Y - topY - 18));
       ctx.fillStyle = color;
     }
   }
@@ -266,30 +268,61 @@ function drawObstacle(ctx: CanvasRenderingContext2D, obs: Obstacle, frame: numbe
 
   switch (type) {
     case 'jump': {
-      // Rebar spike cluster + hazard plate
-      ctx.fillStyle = '#3a1d0f';
-      ctx.fillRect(x - 2, y + h - 5, w + 4, 6);
+      // Barbed wire hazard coil
+      const postW = 2;
+      const wireY = y + h * 0.42;
 
-      ctx.fillStyle = color;
-      const pulse = 0.25 + Math.sin(frame * 0.18 + x * 0.06) * 0.08;
-      for (let i = 0; i < 4; i++) {
-        const sx = x + i * (w / 3.8);
-        const sw = 5;
-        const spikeTop = y + (i % 2 === 0 ? 2 : 6);
+      // Rust posts
+      ctx.fillStyle = '#4f3a2c';
+      ctx.fillRect(x + 2, y + h * 0.1, postW, h * 0.9);
+      ctx.fillRect(x + w - 4, y + h * 0.1, postW, h * 0.9);
 
+      // Coiled wires
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      for (let i = 0; i <= 22; i++) {
+        const t = i / 22;
+        const wx = x + 3 + t * (w - 6);
+        const wy = wireY + Math.sin(t * Math.PI * 3.5 + frame * 0.03) * 3;
+        if (i === 0) {
+          ctx.moveTo(wx, wy);
+        } else {
+          ctx.lineTo(wx, wy);
+        }
+      }
+      ctx.stroke();
+
+      ctx.beginPath();
+      for (let i = 0; i <= 22; i++) {
+        const t = i / 22;
+        const wx = x + 3 + t * (w - 6);
+        const wy = wireY + 6 + Math.sin(t * Math.PI * 3.2 + 1.2 + frame * 0.03) * 3;
+        if (i === 0) {
+          ctx.moveTo(wx, wy);
+        } else {
+          ctx.lineTo(wx, wy);
+        }
+      }
+      ctx.stroke();
+
+      // Barbs
+      ctx.strokeStyle = '#7d7368';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 7; i++) {
+        const bx = x + 5 + i * ((w - 10) / 6);
+        const by = wireY + (i % 2 ? 1 : -1);
         ctx.beginPath();
-        ctx.moveTo(sx, y + h - 4);
-        ctx.lineTo(sx + sw * 0.5, spikeTop);
-        ctx.lineTo(sx + sw, y + h - 4);
-        ctx.closePath();
-        ctx.fill();
+        ctx.moveTo(bx - 1.5, by - 1.2);
+        ctx.lineTo(bx + 1.5, by + 1.2);
+        ctx.moveTo(bx - 1.5, by + 1.2);
+        ctx.lineTo(bx + 1.5, by - 1.2);
+        ctx.stroke();
       }
 
-      // Electrified warning wire glow
-      ctx.globalAlpha = pulse;
-      ctx.fillStyle = 'rgba(255, 86, 24, 0.95)';
-      ctx.fillRect(x - 1, y + h - 7, w + 2, 2);
-      ctx.globalAlpha = 1;
+      // Dusty base shadow
+      ctx.fillStyle = 'rgba(20, 12, 8, 0.35)';
+      ctx.fillRect(x - 1, y + h - 3, w + 2, 3);
       break;
     }
 
@@ -323,18 +356,26 @@ function drawObstacle(ctx: CanvasRenderingContext2D, obs: Obstacle, frame: numbe
       ctx.fillRect(x + 6, y + h - 4, 3, 2);
       ctx.fillRect(x + w - 9, y + h - 4, 3, 2);
 
-      // Rust stripe
-      ctx.fillStyle = 'rgba(242, 169, 94, 0.28)';
+      // Rust stripe + grime streaks
+      ctx.fillStyle = 'rgba(178, 128, 82, 0.2)';
       ctx.fillRect(x + 3, bodyY + bodyH * 0.55, w - 6, 2);
+      ctx.fillStyle = 'rgba(24, 15, 9, 0.26)';
+      ctx.fillRect(x + 6, bodyY + 1, 1, bodyH + 3);
+      ctx.fillRect(x + w * 0.58, bodyY + 2, 1, bodyH + 2);
 
-      ctx.strokeStyle = 'rgba(255, 179, 94, 0.35)';
+      // Bullet dents
+      ctx.fillStyle = 'rgba(23, 13, 7, 0.5)';
+      ctx.fillRect(x + 8, bodyY + 6, 2, 1);
+      ctx.fillRect(x + w * 0.45, bodyY + 9, 2, 1);
+
+      ctx.strokeStyle = 'rgba(195, 146, 99, 0.26)';
       ctx.lineWidth = 1;
       ctx.strokeRect(x + 0.5, bodyY + 0.5, w - 1, bodyH + h * 0.13 - 1);
       break;
     }
 
     case 'shoot2': {
-      // Explosive fuel drum
+      // Fuel drum
       const r = 5;
       ctx.beginPath();
       ctx.moveTo(x + r, y);
@@ -355,16 +396,19 @@ function drawObstacle(ctx: CanvasRenderingContext2D, obs: Obstacle, frame: numbe
       ctx.fillRect(x + 2, y + h * 0.23, w - 4, 3);
       ctx.fillRect(x + 2, y + h * 0.62, w - 4, 3);
 
-      // Corrosion patch
-      ctx.fillStyle = 'rgba(248, 193, 119, 0.22)';
+      // Corrosion patch + grime
+      ctx.fillStyle = 'rgba(182, 140, 98, 0.2)';
       ctx.fillRect(x + w * 0.62, y + h * 0.4, 4, 4);
+      ctx.fillStyle = 'rgba(28, 17, 10, 0.28)';
+      ctx.fillRect(x + 4, y + h * 0.34, 1, h * 0.5);
+      ctx.fillRect(x + w - 6, y + h * 0.3, 1, h * 0.55);
 
       drawHpDots(ctx, x, y - 8, w, hp, maxHp, color);
       break;
     }
 
     case 'shoot3': {
-      // Small wasteland fort
+      // Small wasteland citadel
       const wallTop = y + 10;
       const wallH = h - 10;
 
@@ -392,12 +436,15 @@ function drawObstacle(ctx: CanvasRenderingContext2D, obs: Obstacle, frame: numbe
       ctx.fillStyle = 'rgba(240, 150, 72, 0.28)';
       ctx.fillRect(x + w * 0.5 + 1, y - 4, 4, 2);
 
-      // Surface wear
-      ctx.fillStyle = 'rgba(248, 200, 146, 0.13)';
+      // Surface wear + blast scars
+      ctx.fillStyle = 'rgba(173, 143, 114, 0.15)';
       ctx.fillRect(x + 2, wallTop + 7, w - 4, 1);
       ctx.fillRect(x + 3, wallTop + 16, w - 6, 1);
+      ctx.fillStyle = 'rgba(20, 12, 8, 0.32)';
+      ctx.fillRect(x + 5, wallTop + 12, 2, 1);
+      ctx.fillRect(x + w - 8, wallTop + 18, 2, 1);
 
-      ctx.strokeStyle = 'rgba(248, 200, 146, 0.24)';
+      ctx.strokeStyle = 'rgba(173, 143, 114, 0.24)';
       ctx.lineWidth = 1;
       ctx.strokeRect(x + 0.5, wallTop + 0.5, w - 1, wallH - 1);
 
@@ -422,36 +469,43 @@ export function renderGame(ctx: CanvasRenderingContext2D, state: GameState, fram
   // ── Sky gradient ──────────────────────────────────────────────────────────
   const skyGrad = ctx.createLinearGradient(0, 0, 0, GROUND_Y + 20);
   skyGrad.addColorStop(0, COLOR_BG_TOP);
-  skyGrad.addColorStop(0.62, COLOR_BG_BOTTOM);
-  skyGrad.addColorStop(1, '#552100');
+  skyGrad.addColorStop(0.58, COLOR_BG_BOTTOM);
+  skyGrad.addColorStop(1, '#1e1510');
   ctx.fillStyle = skyGrad;
   ctx.fillRect(-10, -10, GAME_WIDTH + 20, GROUND_Y + 30);
 
   // ── Scorching sun and heat haze ───────────────────────────────────────────
   const sunX = GAME_WIDTH * 0.78;
   const sunY = GROUND_Y - 96;
-  const sunGlow = ctx.createRadialGradient(sunX, sunY, 6, sunX, sunY, 48);
-  sunGlow.addColorStop(0, 'rgba(255, 194, 88, 0.95)');
-  sunGlow.addColorStop(0.35, `${COLOR_SUN}CC`);
-  sunGlow.addColorStop(1, 'rgba(255, 122, 22, 0)');
+  const sunGlow = ctx.createRadialGradient(sunX, sunY, 6, sunX, sunY, 52);
+  sunGlow.addColorStop(0, 'rgba(234, 177, 123, 0.72)');
+  sunGlow.addColorStop(0.4, `${COLOR_SUN}9A`);
+  sunGlow.addColorStop(1, 'rgba(92, 58, 34, 0)');
   ctx.fillStyle = sunGlow;
   ctx.beginPath();
   ctx.arc(sunX, sunY, 48, 0, Math.PI * 2);
   ctx.fill();
 
-  // Horizon heat shimmer
+  // Horizon heat shimmer + ash band
   const haze = ctx.createLinearGradient(0, GROUND_Y - 45, 0, GROUND_Y + 12);
-  haze.addColorStop(0, 'rgba(255, 170, 100, 0)');
-  haze.addColorStop(0.5, 'rgba(255, 139, 55, 0.18)');
-  haze.addColorStop(1, 'rgba(108, 45, 17, 0)');
+  haze.addColorStop(0, 'rgba(145, 110, 79, 0)');
+  haze.addColorStop(0.5, 'rgba(113, 84, 58, 0.2)');
+  haze.addColorStop(1, 'rgba(62, 42, 27, 0)');
   ctx.fillStyle = haze;
   ctx.fillRect(-12, GROUND_Y - 48, GAME_WIDTH + 24, 58);
+
+  const ashBand = ctx.createLinearGradient(0, GROUND_Y - 26, 0, GROUND_Y + 4);
+  ashBand.addColorStop(0, 'rgba(46, 33, 24, 0)');
+  ashBand.addColorStop(0.5, 'rgba(39, 29, 22, 0.25)');
+  ashBand.addColorStop(1, 'rgba(46, 33, 24, 0)');
+  ctx.fillStyle = ashBand;
+  ctx.fillRect(-10, GROUND_Y - 28, GAME_WIDTH + 20, 34);
 
   // ── Dust particles in the sky (reuses star field) ─────────────────────────
   for (const mote of state.stars) {
     const shimmer = 0.45 + Math.sin(frame * 0.02 + mote.x * 0.04) * 0.22;
-    const alpha = Math.max(0.07, mote.brightness * 0.5 * shimmer);
-    ctx.fillStyle = `rgba(255, 196, 126, ${alpha})`;
+    const alpha = Math.max(0.05, mote.brightness * 0.42 * shimmer);
+    ctx.fillStyle = `rgba(168, 138, 109, ${alpha})`;
     ctx.fillRect(mote.x, mote.y, Math.max(0.8, mote.size), Math.max(0.8, mote.size));
   }
 
@@ -464,7 +518,7 @@ export function renderGame(ctx: CanvasRenderingContext2D, state: GameState, fram
   drawRuinLayer(ctx, state.distanceTraveled, 0.055, COLOR_RUIN, 56);
 
   // ── Foreground ruined mounds ───────────────────────────────────────────────
-  ctx.fillStyle = '#261305';
+  ctx.fillStyle = '#221710';
   const moundOffset = (state.distanceTraveled * 0.11) % GAME_WIDTH;
   for (let i = -1; i <= 1; i++) {
     const base = -moundOffset + i * GAME_WIDTH;
@@ -487,14 +541,20 @@ export function renderGame(ctx: CanvasRenderingContext2D, state: GameState, fram
   // ── Ground ────────────────────────────────────────────────────────────────
   const groundGrad = ctx.createLinearGradient(0, GROUND_Y, 0, GAME_HEIGHT);
   groundGrad.addColorStop(0, COLOR_GROUND_LINE);
-  groundGrad.addColorStop(0.18, COLOR_GROUND);
-  groundGrad.addColorStop(1, '#1a0c02');
+  groundGrad.addColorStop(0.2, COLOR_GROUND);
+  groundGrad.addColorStop(1, '#140f0c');
   ctx.fillStyle = groundGrad;
   ctx.fillRect(-10, GROUND_Y, GAME_WIDTH + 20, GROUND_HEIGHT + 10);
 
   // Surface line
   ctx.fillStyle = COLOR_GROUND_LINE;
   ctx.fillRect(-10, GROUND_Y, GAME_WIDTH + 20, 2);
+
+  // Dry mud ripple shadows
+  ctx.fillStyle = 'rgba(18, 12, 9, 0.24)';
+  for (let rx = -8; rx < GAME_WIDTH + 20; rx += 24) {
+    ctx.fillRect(rx, GROUND_Y + 3 + ((rx / 24) % 2), 12, 1);
+  }
 
   // Cracks and grit
   for (const tile of state.groundTiles) {
@@ -505,8 +565,13 @@ export function renderGame(ctx: CanvasRenderingContext2D, state: GameState, fram
     ctx.fillRect(baseX + 3, y, 11, 1);
     ctx.fillRect(baseX + 10, y + 3, 6, 1);
 
-    ctx.fillStyle = 'rgba(245, 172, 114, 0.12)';
+    ctx.fillStyle = 'rgba(160, 132, 102, 0.16)';
     ctx.fillRect(baseX + 8, y - 1, 1, 1);
+
+    // Debris pebbles
+    ctx.fillStyle = 'rgba(33, 22, 15, 0.35)';
+    ctx.fillRect(baseX + 15, y + 1, 1, 1);
+    ctx.fillRect(baseX + 21, y + 4, 1, 1);
   }
 
   // ── Obstacles ─────────────────────────────────────────────────────────────
@@ -520,6 +585,14 @@ export function renderGame(ctx: CanvasRenderingContext2D, state: GameState, fram
   if (!state.gameOver) {
     drawPlayer(ctx, state.player.x, state.player.y, state.player.width, state.player.height, frame, state.player.isGrounded);
   }
+
+  // Foreground dust veil for depth
+  const nearDust = ctx.createLinearGradient(0, GROUND_Y - 24, 0, GROUND_Y + 8);
+  nearDust.addColorStop(0, 'rgba(48, 35, 24, 0)');
+  nearDust.addColorStop(0.45, 'rgba(57, 42, 30, 0.18)');
+  nearDust.addColorStop(1, 'rgba(48, 35, 24, 0)');
+  ctx.fillStyle = nearDust;
+  ctx.fillRect(-10, GROUND_Y - 24, GAME_WIDTH + 20, 34);
 
   // ── Bullets ───────────────────────────────────────────────────────────────
   for (const bullet of state.bullets) {
@@ -553,7 +626,7 @@ export function renderGame(ctx: CanvasRenderingContext2D, state: GameState, fram
   ctx.restore();
 
   // ── HUD ───────────────────────────────────────────────────────────────────
-  ctx.fillStyle = '#fff4db';
+  ctx.fillStyle = '#d8c2a0';
   ctx.font = '10px "Press Start 2P", monospace';
   ctx.textAlign = 'left';
   ctx.fillText(`SCORE ${state.score}`, 10, 18);
