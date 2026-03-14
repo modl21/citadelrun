@@ -1,20 +1,21 @@
 /**
- * Get the start of the current week (Sunday 00:00 UTC)
+ * Get the start of the current week (Monday 00:00 UTC)
  */
 export function getCurrentWeekStart(): number {
   const now = new Date();
-  const day = now.getUTCDay(); // 0 = Sunday
+  const day = now.getUTCDay(); // 0 = Sunday, 1 = Monday
+  const daysSinceMonday = (day + 6) % 7;
   const start = new Date(Date.UTC(
     now.getUTCFullYear(),
     now.getUTCMonth(),
-    now.getUTCDate() - day,
+    now.getUTCDate() - daysSinceMonday,
     0, 0, 0, 0
   ));
   return Math.floor(start.getTime() / 1000);
 }
 
 /**
- * Get the end of the current week (next Sunday 00:00 UTC)
+ * Get the end of the current week (next Monday 00:00 UTC)
  */
 export function getCurrentWeekEnd(): number {
   const start = getCurrentWeekStart();
@@ -50,7 +51,7 @@ export function formatTimestamp(ts: number): string {
 }
 
 /**
- * Get time remaining until next Sunday 00:00 UTC
+ * Get time remaining until next Monday 00:00 UTC
  */
 export function getTimeUntilReset(): string {
   const endTs = getCurrentWeekEnd();
