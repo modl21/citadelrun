@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useSeoMeta } from '@unhead/react';
 import { Zap, Play, Smartphone, Keyboard, Flame } from 'lucide-react';
 import type { NSecSigner } from '@nostrify/nostrify';
@@ -52,6 +52,20 @@ const Index = () => {
   const handleLaunchGame = useCallback(() => {
     setPhase('playing');
   }, []);
+
+  useEffect(() => {
+    if (phase !== 'ready') return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === ' ' || e.code === 'Space') {
+        e.preventDefault();
+        handleLaunchGame();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [phase, handleLaunchGame]);
 
   const handleGameOver = useCallback(async (score: number) => {
     setFinalScore(score);
