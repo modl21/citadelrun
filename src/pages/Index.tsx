@@ -148,7 +148,7 @@ const Index = () => {
                     100 SATS = 1 LIFE
                   </p>
                   <p className="text-[10px] text-orange-200/60 max-w-[220px] mx-auto leading-relaxed">
-                    Run the wasteland. One hit and you&apos;re dead.
+                    Run the wasteland.
                   </p>
                 </div>
 
