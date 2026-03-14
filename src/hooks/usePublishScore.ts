@@ -40,6 +40,7 @@ export function usePublishScore() {
     onSuccess: () => {
       const weekStart = getCurrentWeekStart();
       queryClient.invalidateQueries({ queryKey: ['leaderboard', 'current', weekStart] });
+      queryClient.invalidateQueries({ queryKey: ['leaderboard', 'plays', 'total'] });
     },
     onError: (error) => {
       console.error('Failed to publish score:', error);

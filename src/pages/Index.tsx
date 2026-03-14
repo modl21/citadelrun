@@ -10,6 +10,7 @@ import { Leaderboard } from '@/components/Leaderboard';
 import { WeeklyWinnerBanner } from '@/components/WeeklyWinnerBanner';
 import { GameOverOverlay } from '@/components/GameOverOverlay';
 import { usePublishScore } from '@/hooks/usePublishScore';
+import { useTotalPlayCount } from '@/hooks/useLeaderboard';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import type { GamePhase } from '@/lib/gameTypes';
 import type { GameInvoice } from '@/lib/lightning';
@@ -37,6 +38,7 @@ const Index = () => {
   const [finalScore, setFinalScore] = useState(0);
   const signerRef = useRef<NSecSigner | null>(null);
   const { mutateAsync: publishScore, isPending: isPublishing } = usePublishScore();
+  const { data: totalPlayCount } = useTotalPlayCount();
 
   const handleStartGame = useCallback(() => {
     setShowPayment(true);
@@ -250,6 +252,11 @@ const Index = () => {
 
         {/* Leaderboard */}
         <Leaderboard />
+
+        {/* Total play count */}
+        <p className="text-[9px] font-pixel text-orange-200/35 tracking-wider">
+          TOTAL RUNS {typeof totalPlayCount === 'number' ? totalPlayCount.toLocaleString() : '...'}
+        </p>
 
         {/* Footer */}
         <footer className="text-center text-[10px] text-orange-300/30 pb-4 space-y-1">
