@@ -227,34 +227,44 @@ export function GameCanvas({ onGameOver, isPlaying, isMobile }: GameCanvasProps)
       {/* Mobile Controls Overlay */}
       {isPlaying && isMobile && (
         <div className="absolute inset-0 z-10 pointer-events-none touch-none select-none">
-          {/* JUMP — left side */}
-          <div className="absolute bottom-4 left-3 pointer-events-auto">
-            <button
-              className="w-28 h-28 rounded-full bg-amber-500/25 border-2 border-amber-400/60 active:bg-amber-500/50 flex items-center justify-center transition-colors shadow-[0_0_20px_rgba(245,158,11,0.2)]"
-              onTouchStart={handleTouchStartJump}
-              onTouchEnd={handleTouchEndJump}
-              onMouseDown={handleTouchStartJump}
-              onMouseUp={handleTouchEndJump}
-              onTouchCancel={handleTouchEndJump}
-            >
-              <span className="text-amber-200 font-bold text-xl pointer-events-none tracking-widest drop-shadow-lg select-none">JUMP</span>
-            </button>
-          </div>
+          {/* Left tap zone — Jump */}
+          <button
+            type="button"
+            aria-label="Jump"
+            className="absolute left-0 bottom-0 h-[44%] w-[46%] pointer-events-auto rounded-tr-2xl bg-gradient-to-tr from-amber-500/16 via-amber-400/7 to-transparent active:from-amber-500/28 active:via-amber-400/12 transition-colors"
+            onTouchStart={handleTouchStartJump}
+            onTouchEnd={handleTouchEndJump}
+            onTouchCancel={handleTouchEndJump}
+            onMouseDown={handleTouchStartJump}
+            onMouseUp={handleTouchEndJump}
+            onMouseLeave={handleTouchEndJump}
+          >
+            <span className="absolute bottom-3 left-3 px-2.5 py-1 rounded-md bg-black/35 border border-amber-300/25 text-amber-100/90 font-pixel text-[9px] tracking-wider pointer-events-none">
+              JUMP
+            </span>
+          </button>
 
-          {/* SHOOT — right side */}
-          <div className="absolute bottom-4 right-3 pointer-events-auto">
-            <button
-              className="w-28 h-28 rounded-full bg-red-600/25 border-2 border-red-500/60 active:bg-red-600/50 flex items-center justify-center transition-colors shadow-[0_0_20px_rgba(220,38,38,0.2)]"
-              onTouchStart={handleTouchStartShoot}
-              onTouchEnd={handleTouchEndShoot}
-              onMouseDown={handleTouchStartShoot}
-              onMouseUp={handleTouchEndShoot}
-              onTouchCancel={handleTouchEndShoot}
-            >
-              <span className="text-red-200 font-bold text-xl pointer-events-none tracking-widest drop-shadow-lg select-none">FIRE</span>
-            </button>
-          </div>
+          {/* Right tap zone — Fire */}
+          <button
+            type="button"
+            aria-label="Fire"
+            className="absolute right-0 bottom-0 h-[44%] w-[46%] pointer-events-auto rounded-tl-2xl bg-gradient-to-tl from-red-500/16 via-red-400/7 to-transparent active:from-red-500/28 active:via-red-400/12 transition-colors"
+            onTouchStart={handleTouchStartShoot}
+            onTouchEnd={handleTouchEndShoot}
+            onTouchCancel={handleTouchEndShoot}
+            onMouseDown={handleTouchStartShoot}
+            onMouseUp={handleTouchEndShoot}
+            onMouseLeave={handleTouchEndShoot}
+          >
+            <span className="absolute bottom-3 right-3 px-2.5 py-1 rounded-md bg-black/35 border border-red-300/25 text-red-100/90 font-pixel text-[9px] tracking-wider pointer-events-none">
+              FIRE
+            </span>
+          </button>
 
+          {/* Minimal helper text */}
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 text-[8px] font-pixel text-orange-200/45 whitespace-nowrap pointer-events-none">
+            TAP LEFT TO JUMP • HOLD RIGHT TO FIRE
+          </div>
         </div>
       )}
 
