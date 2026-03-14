@@ -42,7 +42,7 @@ export function GameOverOverlay({ score, isPublishing, onPlayAgain }: GameOverOv
           className="bg-amber-500 text-black font-pixel text-xs hover:bg-amber-400 h-10 px-6 shadow-[0_0_20px_rgba(245,158,11,0.25)] hover:shadow-[0_0_30px_rgba(245,158,11,0.4)] transition-shadow border border-amber-600/50"
         >
           <RotateCcw className="size-3.5 mr-2" />
-          RIDE AGAIN (100 SATS)
+          RUN AGAIN (100 SATS)
         </Button>
       </div>
     </div>

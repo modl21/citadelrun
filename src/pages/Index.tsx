@@ -217,7 +217,7 @@ const Index = () => {
                 <span className="w-[2px] h-2.5 bg-red-500" />
                 <span className="w-[2px] h-2 bg-red-600" />
               </span>
-              BARBED WIRE
+              WIRE
             </span>
             <span className="flex items-center gap-1.5">
               <span className="inline-block w-2.5 h-2.5 bg-yellow-800 border border-amber-500/40" />
