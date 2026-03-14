@@ -33,16 +33,16 @@ export const SPIKE_WIDTH = 28;
 export const SPIKE_HEIGHT = 32;
 
 // shoot-1 obstacle: truck
-export const CRATE_WIDTH = 90;
-export const CRATE_HEIGHT = 90;
+export const CRATE_WIDTH = 68;
+export const CRATE_HEIGHT = 68;
 
 // shoot-2 obstacle: barrel
 export const BARREL_WIDTH = 28;
 export const BARREL_HEIGHT = 36;
 
 // shoot-3 obstacle: citadel
-export const WALL_WIDTH = 96;
-export const WALL_HEIGHT = 156;
+export const WALL_WIDTH = 72;
+export const WALL_HEIGHT = 117;
 
 // ─── Background parallax ──────────────────────────────────────────────────────
 export const PARALLAX_FAR_SPEED = 0.15;

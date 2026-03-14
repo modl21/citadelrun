@@ -327,50 +327,64 @@ function drawObstacle(ctx: CanvasRenderingContext2D, obs: Obstacle, frame: numbe
     }
 
     case 'shoot1': {
-      // Scrapyard truck wreck
-      const bodyY = y + h * 0.28;
-      const bodyH = h * 0.48;
-      const cabW = w * 0.36;
+      // Pickup truck with mounted machine gun
+      const chassisY = y + h * 0.58;
+      const chassisH = h * 0.22;
+      const cabW = w * 0.26;
+      const cabH = h * 0.26;
+      const bedW = w * 0.44;
+      const bedX = x + w * 0.08;
 
-      // Main chassis
+      // Chassis
       ctx.fillStyle = color;
-      ctx.fillRect(x + 1, bodyY, w - 2, bodyH);
+      ctx.fillRect(x + 2, chassisY, w - 4, chassisH);
+
+      // Pickup bed
+      ctx.fillStyle = '#5c4a37';
+      ctx.fillRect(bedX, y + h * 0.4, bedW, h * 0.2);
+      ctx.fillStyle = 'rgba(21, 13, 8, 0.38)';
+      ctx.fillRect(bedX + 2, y + h * 0.44, bedW - 4, h * 0.05);
 
       // Cab
-      ctx.fillStyle = '#7b5a1a';
-      ctx.fillRect(x + w - cabW - 1, y + h * 0.15, cabW, bodyH + h * 0.13);
+      const cabX = x + w - cabW - 3;
+      const cabY = y + h * 0.34;
+      ctx.fillStyle = '#7a654d';
+      ctx.fillRect(cabX, cabY, cabW, cabH);
 
-      // Bed rail
-      ctx.fillStyle = 'rgba(38, 20, 6, 0.5)';
-      ctx.fillRect(x + 2, bodyY + 2, w * 0.45, 2);
+      // Window
+      ctx.fillStyle = 'rgba(22, 14, 9, 0.58)';
+      ctx.fillRect(cabX + 2, cabY + 2, cabW - 5, cabH * 0.4);
 
-      // Window crack
-      ctx.fillStyle = 'rgba(16, 9, 3, 0.55)';
-      ctx.fillRect(x + w - cabW + 2, y + h * 0.24, cabW - 5, 4);
+      // Mounted machine gun (tripod + gun body)
+      const gunBaseX = bedX + bedW * 0.62;
+      const gunBaseY = y + h * 0.36;
+      ctx.fillStyle = '#2a2018';
+      ctx.fillRect(gunBaseX, gunBaseY, 2, h * 0.12); // post
+      ctx.fillRect(gunBaseX - 2, gunBaseY + h * 0.1, 6, 2); // pivot
+      ctx.fillStyle = '#3a2d22';
+      ctx.fillRect(gunBaseX + 1, gunBaseY + h * 0.02, w * 0.16, 3); // barrel housing
+      ctx.fillStyle = '#20170f';
+      ctx.fillRect(gunBaseX + w * 0.16, gunBaseY + h * 0.03, w * 0.08, 2); // barrel
 
       // Wheels
-      ctx.fillStyle = '#211104';
-      ctx.fillRect(x + 4, y + h - 6, 7, 6);
-      ctx.fillRect(x + w - 11, y + h - 6, 7, 6);
-      ctx.fillStyle = '#674925';
-      ctx.fillRect(x + 6, y + h - 4, 3, 2);
-      ctx.fillRect(x + w - 9, y + h - 4, 3, 2);
+      const wheelY = y + h - 7;
+      ctx.fillStyle = '#1f140d';
+      ctx.fillRect(x + w * 0.18, wheelY, 8, 7);
+      ctx.fillRect(x + w * 0.7, wheelY, 8, 7);
+      ctx.fillStyle = '#5f4a36';
+      ctx.fillRect(x + w * 0.18 + 2, wheelY + 2, 4, 3);
+      ctx.fillRect(x + w * 0.7 + 2, wheelY + 2, 4, 3);
 
-      // Rust stripe + grime streaks
-      ctx.fillStyle = 'rgba(178, 128, 82, 0.2)';
-      ctx.fillRect(x + 3, bodyY + bodyH * 0.55, w - 6, 2);
-      ctx.fillStyle = 'rgba(24, 15, 9, 0.26)';
-      ctx.fillRect(x + 6, bodyY + 1, 1, bodyH + 3);
-      ctx.fillRect(x + w * 0.58, bodyY + 2, 1, bodyH + 2);
-
-      // Bullet dents
-      ctx.fillStyle = 'rgba(23, 13, 7, 0.5)';
-      ctx.fillRect(x + 8, bodyY + 6, 2, 1);
-      ctx.fillRect(x + w * 0.45, bodyY + 9, 2, 1);
+      // Weathering
+      ctx.fillStyle = 'rgba(180, 135, 94, 0.18)';
+      ctx.fillRect(x + 5, chassisY + 2, w - 10, 2);
+      ctx.fillStyle = 'rgba(24, 15, 9, 0.28)';
+      ctx.fillRect(x + 9, y + h * 0.44, 1, h * 0.24);
+      ctx.fillRect(x + w * 0.56, y + h * 0.46, 1, h * 0.2);
 
       ctx.strokeStyle = 'rgba(195, 146, 99, 0.26)';
       ctx.lineWidth = 1;
-      ctx.strokeRect(x + 0.5, bodyY + 0.5, w - 1, bodyH + h * 0.13 - 1);
+      ctx.strokeRect(x + 0.5, y + h * 0.34 + 0.5, w - 1, h * 0.46 - 1);
       break;
     }
 
@@ -408,45 +422,62 @@ function drawObstacle(ctx: CanvasRenderingContext2D, obs: Obstacle, frame: numbe
     }
 
     case 'shoot3': {
-      // Small wasteland citadel
-      const wallTop = y + 10;
-      const wallH = h - 10;
+      // Fortified castle citadel
+      const mainTop = y + h * 0.22;
+      const mainH = h * 0.78;
+      const towerW = Math.max(10, w * 0.22);
 
-      // Base wall
+      // Keep walls
       ctx.fillStyle = color;
-      ctx.fillRect(x, wallTop, w, wallH);
+      ctx.fillRect(x + towerW * 0.6, mainTop, w - towerW * 1.2, mainH);
 
-      // Battlements
-      ctx.fillRect(x + 1, y + 6, 4, 5);
-      ctx.fillRect(x + w * 0.5 - 2, y + 4, 5, 7);
-      ctx.fillRect(x + w - 6, y + 6, 4, 5);
+      // Left / right towers
+      ctx.fillStyle = '#5f4f43';
+      ctx.fillRect(x + 1, y + h * 0.16, towerW, h * 0.84);
+      ctx.fillRect(x + w - towerW - 1, y + h * 0.16, towerW, h * 0.84);
 
-      // Gate
-      ctx.fillStyle = 'rgba(30, 16, 7, 0.45)';
-      ctx.fillRect(x + w * 0.38, y + h - 13, w * 0.24, 10);
+      // Battlements on towers and keep
+      ctx.fillStyle = '#746252';
+      const battlementW = 5;
+      for (let bx = x + 2; bx < x + towerW - 1; bx += battlementW + 1) {
+        ctx.fillRect(bx, y + h * 0.12, battlementW, 4);
+      }
+      for (let bx = x + w - towerW + 1; bx < x + w - 2; bx += battlementW + 1) {
+        ctx.fillRect(bx, y + h * 0.12, battlementW, 4);
+      }
+      for (let bx = x + towerW * 0.75; bx < x + w - towerW * 0.75; bx += battlementW + 1) {
+        ctx.fillRect(bx, mainTop - 5, battlementW, 4);
+      }
 
-      // Side braces
-      ctx.fillStyle = '#3b2919';
-      ctx.fillRect(x + 2, wallTop + 5, 2, wallH - 7);
-      ctx.fillRect(x + w - 4, wallTop + 5, 2, wallH - 7);
+      // Gatehouse door
+      ctx.fillStyle = 'rgba(31, 20, 12, 0.55)';
+      ctx.fillRect(x + w * 0.42, y + h - 18, w * 0.16, 15);
+      ctx.fillStyle = 'rgba(82, 65, 49, 0.4)';
+      ctx.fillRect(x + w * 0.445, y + h - 14, w * 0.11, 1);
 
-      // Flag/rebar pole
-      ctx.fillStyle = '#2b1708';
-      ctx.fillRect(x + w * 0.5, y - 4, 1, 8);
-      ctx.fillStyle = 'rgba(240, 150, 72, 0.28)';
-      ctx.fillRect(x + w * 0.5 + 1, y - 4, 4, 2);
+      // Arrow slits
+      ctx.fillStyle = 'rgba(28, 18, 11, 0.44)';
+      ctx.fillRect(x + towerW * 0.45, y + h * 0.44, 1, 5);
+      ctx.fillRect(x + w - towerW * 0.45 - 1, y + h * 0.44, 1, 5);
+      ctx.fillRect(x + w * 0.5, mainTop + h * 0.2, 1, 5);
 
-      // Surface wear + blast scars
-      ctx.fillStyle = 'rgba(173, 143, 114, 0.15)';
-      ctx.fillRect(x + 2, wallTop + 7, w - 4, 1);
-      ctx.fillRect(x + 3, wallTop + 16, w - 6, 1);
-      ctx.fillStyle = 'rgba(20, 12, 8, 0.32)';
-      ctx.fillRect(x + 5, wallTop + 12, 2, 1);
-      ctx.fillRect(x + w - 8, wallTop + 18, 2, 1);
+      // Wall seams and weathering
+      ctx.fillStyle = 'rgba(173, 143, 114, 0.14)';
+      ctx.fillRect(x + 4, mainTop + 9, w - 8, 1);
+      ctx.fillRect(x + 4, mainTop + 19, w - 8, 1);
+      ctx.fillStyle = 'rgba(20, 12, 8, 0.28)';
+      ctx.fillRect(x + 7, mainTop + 12, 2, 1);
+      ctx.fillRect(x + w - 10, mainTop + 21, 2, 1);
+
+      // Banner
+      ctx.fillStyle = '#2d2117';
+      ctx.fillRect(x + w * 0.5, y + h * 0.03, 1, 9);
+      ctx.fillStyle = 'rgba(179, 106, 57, 0.5)';
+      ctx.fillRect(x + w * 0.5 + 1, y + h * 0.03, 6, 3);
 
       ctx.strokeStyle = 'rgba(173, 143, 114, 0.24)';
       ctx.lineWidth = 1;
-      ctx.strokeRect(x + 0.5, wallTop + 0.5, w - 1, wallH - 1);
+      ctx.strokeRect(x + 0.5, y + h * 0.16 + 0.5, w - 1, h * 0.84 - 1);
 
       drawHpDots(ctx, x, y - 8, w, hp, maxHp, color);
       break;
