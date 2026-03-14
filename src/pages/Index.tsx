@@ -16,15 +16,18 @@ import type { GameInvoice } from '@/lib/lightning';
 
 const Index = () => {
   useSeoMeta({
-    title: 'Citadel Run - One Life. Infinite Run. Pay Sats to Play.',
-    description: 'An endless runner powered by Bitcoin Lightning. Jump obstacles, shoot barriers, survive as long as you can. Pay 100 sats for one life.',
+    title: 'Citadel Run - One life. Infinite wasteland.',
+    description: 'One life. Infinite wasteland.',
     ogTitle: 'Citadel Run',
-    ogDescription: '100 Sats. One Life. Run Forever.',
+    ogDescription: 'One life. Infinite wasteland.',
     ogType: 'website',
     ogSiteName: 'Citadel Run',
+    ogUrl: 'https://citadelrun.com',
+    ogImage: 'https://citadelrun.com/citadelruns.png',
     twitterCard: 'summary_large_image',
     twitterTitle: 'Citadel Run',
-    twitterDescription: '100 Sats. One Life. Run Forever.',
+    twitterDescription: 'One life. Infinite wasteland.',
+    twitterImage: 'https://citadelrun.com/citadelruns.png',
   });
 
   const isMobile = useIsMobile();
@@ -99,7 +102,7 @@ const Index = () => {
             CITADEL RUN
           </h1>
           <p className="text-xs text-orange-200/70 max-w-xs mx-auto tracking-wide">
-            One life. Infinite wasteland. Survive or be dust.
+            One life. Infinite wasteland.
           </p>
         </div>
 
