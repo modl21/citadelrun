@@ -216,7 +216,7 @@ export function GameCanvas({ onGameOver, isPlaying, isMobile }: GameCanvasProps)
         ref={canvasRef}
         width={GAME_WIDTH}
         height={GAME_HEIGHT}
-        className="game-canvas rounded-lg border border-orange-800/60 shadow-[0_0_40px_rgba(180,60,0,0.25)]"
+        className="game-canvas rounded-lg border border-amber-700/55 shadow-[0_18px_60px_rgba(8,6,4,0.55),0_0_42px_rgba(179,106,57,0.18)]"
         style={{
           width: GAME_WIDTH * canvasScale,
           height: GAME_HEIGHT * canvasScale,

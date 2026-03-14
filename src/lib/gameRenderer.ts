@@ -45,6 +45,60 @@ function drawDustBand(
   }
 }
 
+function drawCinematicGrade(ctx: CanvasRenderingContext2D, frame: number) {
+  // Cool shadows from top corners
+  const coolShadow = ctx.createRadialGradient(70, 40, 10, 70, 40, 220);
+  coolShadow.addColorStop(0, 'rgba(58, 70, 84, 0.10)');
+  coolShadow.addColorStop(1, 'rgba(18, 24, 32, 0)');
+  ctx.fillStyle = coolShadow;
+  ctx.fillRect(-10, -10, GAME_WIDTH + 20, GROUND_Y + 20);
+
+  const coolShadowRight = ctx.createRadialGradient(GAME_WIDTH - 70, 45, 10, GAME_WIDTH - 70, 45, 220);
+  coolShadowRight.addColorStop(0, 'rgba(58, 70, 84, 0.08)');
+  coolShadowRight.addColorStop(1, 'rgba(18, 24, 32, 0)');
+  ctx.fillStyle = coolShadowRight;
+  ctx.fillRect(-10, -10, GAME_WIDTH + 20, GROUND_Y + 20);
+
+  // Warm bloom near horizon for cinematic contrast
+  const warmBloom = ctx.createLinearGradient(0, GROUND_Y - 44, 0, GROUND_Y + 8);
+  warmBloom.addColorStop(0, 'rgba(208, 128, 68, 0)');
+  warmBloom.addColorStop(0.55, 'rgba(208, 128, 68, 0.12)');
+  warmBloom.addColorStop(1, 'rgba(208, 128, 68, 0)');
+  ctx.fillStyle = warmBloom;
+  ctx.fillRect(-10, GROUND_Y - 46, GAME_WIDTH + 20, 60);
+
+  // Subtle film grain specks
+  const grainAlpha = 0.035 + Math.sin(frame * 0.09) * 0.008;
+  ctx.fillStyle = `rgba(255, 240, 215, ${grainAlpha})`;
+  for (let gx = 0; gx < GAME_WIDTH; gx += 26) {
+    const gy = ((gx * 19 + frame * 3) % Math.max(1, GROUND_Y - 4));
+    ctx.fillRect(gx, gy, 1, 1);
+  }
+}
+
+function drawVignette(ctx: CanvasRenderingContext2D) {
+  const vignette = ctx.createRadialGradient(
+    GAME_WIDTH / 2,
+    GAME_HEIGHT / 2,
+    GAME_WIDTH * 0.2,
+    GAME_WIDTH / 2,
+    GAME_HEIGHT / 2,
+    GAME_WIDTH * 0.72,
+  );
+  vignette.addColorStop(0, 'rgba(0, 0, 0, 0)');
+  vignette.addColorStop(0.75, 'rgba(0, 0, 0, 0.16)');
+  vignette.addColorStop(1, 'rgba(0, 0, 0, 0.32)');
+
+  ctx.fillStyle = vignette;
+  ctx.fillRect(-10, -10, GAME_WIDTH + 20, GAME_HEIGHT + 20);
+}
+
+function drawLetterboxBars(ctx: CanvasRenderingContext2D) {
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.38)';
+  ctx.fillRect(0, 0, GAME_WIDTH, 6);
+  ctx.fillRect(0, GAME_HEIGHT - 6, GAME_WIDTH, 6);
+}
+
 function drawMesaLayer(
   ctx: CanvasRenderingContext2D,
   distance: number,
@@ -540,6 +594,9 @@ export function renderGame(ctx: CanvasRenderingContext2D, state: GameState, fram
     ctx.fillRect(mote.x, mote.y, Math.max(0.8, mote.size), Math.max(0.8, mote.size));
   }
 
+  // Cinematic color grade overlays
+  drawCinematicGrade(ctx, frame);
+
   // ── Moving dust bands ──────────────────────────────────────────────────────
   drawDustBand(ctx, GROUND_Y - 82, 22, 0.12, (state.distanceTraveled * 0.12) % GAME_WIDTH);
   drawDustBand(ctx, GROUND_Y - 58, 18, 0.08, (state.distanceTraveled * 0.19) % GAME_WIDTH);
@@ -684,10 +741,16 @@ export function renderGame(ctx: CanvasRenderingContext2D, state: GameState, fram
     ctx.stroke();
   }
 
+  // Final cinematic post-processing on scene
+  drawVignette(ctx);
+  drawLetterboxBars(ctx);
+
   ctx.restore();
 
   // ── HUD ───────────────────────────────────────────────────────────────────
-  ctx.fillStyle = '#d8c2a0';
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.65)';
+  ctx.shadowBlur = 5;
+  ctx.fillStyle = '#e7d2b2';
   ctx.font = '10px "Press Start 2P", monospace';
   ctx.textAlign = 'left';
   ctx.fillText(`SCORE ${state.score}`, 10, 18);
@@ -702,7 +765,7 @@ export function renderGame(ctx: CanvasRenderingContext2D, state: GameState, fram
   ctx.textAlign = 'center';
   const speedPct = Math.floor(((state.gameSpeed - 3.2) / (10 - 3.2)) * 100);
   if (speedPct > 0) {
-    ctx.fillStyle = 'rgba(255, 208, 142, 0.45)';
+    ctx.fillStyle = 'rgba(255, 208, 142, 0.55)';
     ctx.font = '8px "Press Start 2P", monospace';
     ctx.fillText(`SPD ${speedPct}%`, GAME_WIDTH / 2, 18);
   }
@@ -713,8 +776,16 @@ export function renderGame(ctx: CanvasRenderingContext2D, state: GameState, fram
     if (blinkOn) {
       ctx.textAlign = 'center';
       ctx.font = '10px "Press Start 2P", monospace';
-      ctx.fillStyle = 'rgba(255, 228, 178, 0.95)';
+      ctx.fillStyle = 'rgba(255, 228, 178, 0.98)';
+      ctx.fillText('10% FASTER', GAME_WIDTH / 2, 34);
+
+      // Cinematic impact backplate
+      ctx.fillStyle = 'rgba(18, 10, 6, 0.45)';
+      ctx.fillRect(GAME_WIDTH / 2 - 76, 24, 152, 14);
+      ctx.fillStyle = 'rgba(255, 228, 178, 0.98)';
       ctx.fillText('10% FASTER', GAME_WIDTH / 2, 34);
     }
   }
+
+  ctx.shadowBlur = 0;
 }

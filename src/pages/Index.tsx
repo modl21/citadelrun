@@ -75,13 +75,19 @@ const Index = () => {
 
   return (
     <div className="min-h-full bg-[#0d0700] text-foreground overflow-y-auto">
+      {/* Cinematic top glow */}
+      <div className="fixed inset-x-0 top-0 h-56 pointer-events-none z-0 bg-gradient-to-b from-amber-900/12 via-orange-900/8 to-transparent" />
+
       {/* Dust/grit overlay */}
-      <div className="fixed inset-0 pointer-events-none z-50 opacity-[0.025]">
+      <div className="fixed inset-0 pointer-events-none z-50 opacity-[0.03]">
         <div className="w-full h-[200%] bg-[repeating-linear-gradient(transparent,transparent_2px,rgba(200,120,30,0.04)_2px,rgba(200,120,30,0.04)_4px)] animate-scanline" />
       </div>
 
+      {/* Vignette-style edge darkening */}
+      <div className="fixed inset-0 pointer-events-none z-[45] bg-[radial-gradient(circle_at_center,transparent_40%,rgba(0,0,0,0.38)_100%)]" />
+
       {/* Distant heat shimmer glow at horizon */}
-      <div className="fixed bottom-0 left-0 right-0 h-32 pointer-events-none z-0 bg-gradient-to-t from-orange-900/10 to-transparent" />
+      <div className="fixed bottom-0 left-0 right-0 h-36 pointer-events-none z-0 bg-gradient-to-t from-orange-900/20 via-orange-800/10 to-transparent" />
 
       <div className="relative z-10 flex flex-col items-center min-h-full px-4 py-6 gap-5">
         {/* Weekly Winner Banner */}
@@ -89,10 +95,10 @@ const Index = () => {
 
         {/* Title */}
         <div className="text-center space-y-2">
-          <h1 className="font-pixel text-xl md:text-2xl text-amber-400 tracking-wider animate-float drop-shadow-[0_0_12px_rgba(245,158,11,0.5)]">
+          <h1 className="font-pixel text-xl md:text-2xl text-amber-300 tracking-[0.22em] animate-float drop-shadow-[0_0_14px_rgba(245,158,11,0.55)]">
             CITADEL RUN
           </h1>
-          <p className="text-xs text-orange-300/60 max-w-xs mx-auto tracking-wide">
+          <p className="text-xs text-orange-200/70 max-w-xs mx-auto tracking-wide">
             One life. Infinite wasteland. Survive or be dust.
           </p>
         </div>
@@ -107,7 +113,7 @@ const Index = () => {
 
           {/* Idle overlay */}
           {phase === 'idle' && (
-            <div className="absolute inset-0 flex items-center justify-center z-10 bg-black/60 backdrop-blur-[2px] rounded-lg">
+            <div className="absolute inset-0 flex items-center justify-center z-10 bg-black/60 backdrop-blur-[3px] rounded-lg">
               <div className="text-center space-y-5 p-6">
                 <div className="flex justify-center">
                   <div className="relative">
@@ -131,7 +137,7 @@ const Index = () => {
 
                 <Button
                   onClick={handleStartGame}
-                  className="bg-amber-500 text-black font-pixel text-xs hover:bg-amber-400 h-12 px-8 shadow-[0_0_24px_rgba(245,158,11,0.3)] hover:shadow-[0_0_36px_rgba(245,158,11,0.5)] transition-shadow border border-amber-600/50"
+                  className="bg-amber-500 text-black font-pixel text-xs hover:bg-amber-400 h-12 px-8 shadow-[0_12px_34px_rgba(0,0,0,0.42),0_0_24px_rgba(245,158,11,0.28)] hover:shadow-[0_18px_46px_rgba(0,0,0,0.5),0_0_36px_rgba(245,158,11,0.5)] transition-shadow border border-amber-600/50"
                 >
                   <Zap className="size-4 mr-2 fill-current" />
                   INSERT COIN
@@ -170,7 +176,7 @@ const Index = () => {
 
                 <Button
                   onClick={handleLaunchGame}
-                  className="bg-amber-500 text-black font-pixel text-sm hover:bg-amber-400 h-14 px-10 shadow-[0_0_30px_rgba(245,158,11,0.35)] hover:shadow-[0_0_48px_rgba(245,158,11,0.55)] transition-shadow animate-pulse-glow border border-amber-600/50"
+                  className="bg-amber-500 text-black font-pixel text-sm hover:bg-amber-400 h-14 px-10 shadow-[0_16px_40px_rgba(0,0,0,0.48),0_0_30px_rgba(245,158,11,0.35)] hover:shadow-[0_22px_56px_rgba(0,0,0,0.56),0_0_48px_rgba(245,158,11,0.55)] transition-shadow animate-pulse-glow border border-amber-600/50"
                 >
                   <Play className="size-5 mr-2 fill-current" />
                   RUN
