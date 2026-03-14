@@ -2,7 +2,19 @@ import { useRef, useEffect, useCallback, useState } from 'react';
 
 import { createInitialState, updateGame } from '@/lib/gameEngine';
 import { renderGame } from '@/lib/gameRenderer';
-import { GAME_WIDTH, GAME_HEIGHT } from '@/lib/gameConstants';
+import {
+  GAME_WIDTH,
+  GAME_HEIGHT,
+  GROUND_Y,
+  SPIKE_WIDTH,
+  SPIKE_HEIGHT,
+  CRATE_WIDTH,
+  CRATE_HEIGHT,
+  BARREL_WIDTH,
+  BARREL_HEIGHT,
+  WALL_WIDTH,
+  WALL_HEIGHT,
+} from '@/lib/gameConstants';
 import type { GameState } from '@/lib/gameTypes';
 
 interface GameCanvasProps {
@@ -152,9 +164,10 @@ export function GameCanvas({ onGameOver, isPlaying, isMobile }: GameCanvasProps)
     let idleState = createInitialState(performance.now());
     // Spawn some obstacles for visual interest
     idleState.obstacles = [
-      { x: 200, y: GAME_HEIGHT - 40 - 32, width: 28, height: 32, type: 'jump', hp: 999, maxHp: 999, active: true, hitFlash: 0 },
-      { x: 320, y: GAME_HEIGHT - 40 - 30, width: 30, height: 30, type: 'shoot1', hp: 1, maxHp: 1, active: true, hitFlash: 0 },
-      { x: 420, y: GAME_HEIGHT - 40 - 36, width: 28, height: 36, type: 'shoot2', hp: 2, maxHp: 2, active: true, hitFlash: 0 },
+      { x: 140, y: GROUND_Y - SPIKE_HEIGHT, width: SPIKE_WIDTH, height: SPIKE_HEIGHT, type: 'jump', hp: 999, maxHp: 999, active: true, hitFlash: 0 },
+      { x: 200, y: GROUND_Y - CRATE_HEIGHT, width: CRATE_WIDTH, height: CRATE_HEIGHT, type: 'shoot1', hp: 1, maxHp: 1, active: true, hitFlash: 0 },
+      { x: 330, y: GROUND_Y - BARREL_HEIGHT, width: BARREL_WIDTH, height: BARREL_HEIGHT, type: 'shoot2', hp: 2, maxHp: 2, active: true, hitFlash: 0 },
+      { x: 390, y: GROUND_Y - WALL_HEIGHT, width: WALL_WIDTH, height: WALL_HEIGHT, type: 'shoot3', hp: 3, maxHp: 3, active: true, hitFlash: 0 },
     ];
 
     let idleAnimFrame: number;
