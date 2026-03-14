@@ -6,6 +6,7 @@ import qrcode from 'qrcode';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useAppContext } from '@/hooks/useAppContext';
 import { PAYMENT_AMOUNT_SATS, PAYMENT_RECIPIENT } from '@/lib/gameConstants';
 import { getGameInvoice, isWebLNAvailable, payWithWebLN } from '@/lib/lightning';
@@ -193,6 +194,28 @@ export function PaymentGate({ open, onPaid, onClose }: PaymentGateProps) {
           <DialogDescription className="text-center text-muted-foreground text-sm">
             Zap {PAYMENT_AMOUNT_SATS} sats to {PAYMENT_RECIPIENT} for 1 life
           </DialogDescription>
+          <div className="flex justify-center pt-1">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  type="button"
+                  className="text-[10px] font-pixel tracking-wide text-cyan-300/70 underline decoration-dotted underline-offset-2 hover:text-cyan-300 transition-colors"
+                >
+                  NEED A LIGHTNING WALLET?
+                </button>
+              </TooltipTrigger>
+              <TooltipContent className="max-w-[230px] border-cyan-500/30 bg-[#0a0914] text-cyan-200">
+                <a
+                  href="https://primal.net/downloads"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-2"
+                >
+                  Need a lightning wallet?
+                </a>
+              </TooltipContent>
+            </Tooltip>
+          </div>
         </DialogHeader>
 
         {step === 'address' && (
