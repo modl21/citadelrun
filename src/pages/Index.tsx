@@ -212,7 +212,7 @@ const Index = () => {
             </span>
             <span className="flex items-center gap-1.5">
               <span className="inline-block w-2.5 h-2.5 bg-yellow-800 border border-amber-500/40" />
-              TRUCK WRECK (1)
+              TRUCK (1)
             </span>
             <span className="flex items-center gap-1.5">
               <span className="inline-block w-2.5 h-2.5 bg-orange-800 rounded-[2px] border border-orange-400/35" />
