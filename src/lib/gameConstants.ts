@@ -61,20 +61,26 @@ export const SCORE_SHOOT2 = 30;             // destroying 2-hit obstacle
 export const SCORE_SHOOT3 = 50;             // destroying 3-hit obstacle
 export const SCORE_HIT = 5;                 // partial hit on multi-hp obstacle
 
-// ─── Colors ───────────────────────────────────────────────────────────────────
-export const COLOR_BG_TOP = '#0a0914';
-export const COLOR_BG_BOTTOM = '#0f1a2e';
-export const COLOR_GROUND = '#1a2640';
-export const COLOR_GROUND_LINE = '#2a3f60';
-export const COLOR_PLAYER = '#22d3ee';      // cyan
-export const COLOR_PLAYER_ACCENT = '#f0abfc'; // pink accent
-export const COLOR_BULLET = '#fde047';      // yellow
-export const COLOR_SPIKE = '#ef4444';       // red — must jump
-export const COLOR_CRATE = '#84cc16';       // lime — 1-shot
-export const COLOR_BARREL = '#f97316';      // orange — 2-shot
-export const COLOR_WALL = '#a855f7';        // purple — 3-shot
-export const COLOR_HIT_FLASH = '#ffffff';
-export const COLOR_PARTICLE_DUST = '#94a3b8';
+// ─── Colors — Mad Max Wasteland ──────────────────────────────────────────────
+export const COLOR_BG_TOP = '#1a0a00';        // deep burnt orange-black sky
+export const COLOR_BG_BOTTOM = '#3d1a00';     // scorched horizon glow
+export const COLOR_GROUND = '#2a1800';        // cracked parched earth
+export const COLOR_GROUND_LINE = '#5c3010';   // dried crust surface line
+export const COLOR_GROUND_CRACK = '#1a0e00';  // crack details
+export const COLOR_PLAYER = '#e8a422';        // sun-baked amber hero
+export const COLOR_PLAYER_COAT = '#7c4a10';   // brown leather coat
+export const COLOR_PLAYER_ACCENT = '#ff6b1a'; // fire/ember orange
+export const COLOR_BULLET = '#ff9900';        // blazing amber shot
+export const COLOR_BULLET_TRAIL = '#ff4400';  // fire trail
+export const COLOR_SPIKE = '#cc2200';         // blood-red spikes — must jump
+export const COLOR_CRATE = '#8b6914';         // rusted tin crate — 1-shot
+export const COLOR_BARREL = '#b34000';        // corroded drum — 2-shot
+export const COLOR_WALL = '#4a3520';          // broken stone wall — 3-shot
+export const COLOR_HIT_FLASH = '#ffcc44';     // golden flash on hit
+export const COLOR_PARTICLE_DUST = '#c4793a'; // sand/dust particles
+export const COLOR_SUN = '#ff8800';           // scorching sun
+export const COLOR_MESA = '#2e1505';          // far mesa silhouette
+export const COLOR_RUIN = '#1e1005';          // distant ruins
 
 // ─── Payment / Nostr ─────────────────────────────────────────────────────────
 export const PAYMENT_AMOUNT_SATS = 100;

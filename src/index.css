@@ -4,83 +4,84 @@
 
 @layer base {
   :root {
-    --background: 240 20% 4%;
-    --foreground: 0 0% 96%;
+    /* Mad Max Wasteland — amber/rust/sand dark theme */
+    --background: 20 60% 4%;
+    --foreground: 38 80% 92%;
 
-    --card: 240 18% 6%;
-    --card-foreground: 0 0% 96%;
+    --card: 20 50% 6%;
+    --card-foreground: 38 80% 92%;
 
-    --popover: 240 18% 6%;
-    --popover-foreground: 0 0% 96%;
+    --popover: 20 50% 6%;
+    --popover-foreground: 38 80% 92%;
 
-    --primary: 187 92% 53%;
-    --primary-foreground: 240 20% 4%;
+    --primary: 38 95% 52%;
+    --primary-foreground: 20 60% 4%;
 
-    --secondary: 240 10% 14%;
-    --secondary-foreground: 0 0% 96%;
+    --secondary: 20 30% 12%;
+    --secondary-foreground: 38 80% 92%;
 
-    --muted: 240 10% 14%;
-    --muted-foreground: 215 15% 55%;
+    --muted: 20 30% 12%;
+    --muted-foreground: 28 25% 50%;
 
-    --accent: 47 100% 50%;
-    --accent-foreground: 240 20% 4%;
+    --accent: 25 95% 48%;
+    --accent-foreground: 20 60% 4%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 72% 45%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 10% 16%;
-    --input: 240 10% 16%;
-    --ring: 187 92% 53%;
+    --border: 20 25% 14%;
+    --input: 20 25% 14%;
+    --ring: 38 95% 52%;
 
-    --radius: 0.75rem;
+    --radius: 0.5rem;
 
-    --sidebar-background: 240 18% 8%;
-    --sidebar-foreground: 240 5% 90%;
-    --sidebar-primary: 187 92% 53%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 10% 16%;
-    --sidebar-accent-foreground: 240 5% 90%;
-    --sidebar-border: 240 10% 16%;
-    --sidebar-ring: 187 92% 53%;
+    --sidebar-background: 20 50% 6%;
+    --sidebar-foreground: 38 60% 85%;
+    --sidebar-primary: 38 95% 52%;
+    --sidebar-primary-foreground: 20 60% 4%;
+    --sidebar-accent: 20 30% 12%;
+    --sidebar-accent-foreground: 38 60% 85%;
+    --sidebar-border: 20 25% 14%;
+    --sidebar-ring: 38 95% 52%;
   }
 
   .dark {
-    --background: 240 20% 4%;
-    --foreground: 0 0% 96%;
+    --background: 20 60% 4%;
+    --foreground: 38 80% 92%;
 
-    --card: 240 18% 6%;
-    --card-foreground: 0 0% 96%;
+    --card: 20 50% 6%;
+    --card-foreground: 38 80% 92%;
 
-    --popover: 240 18% 6%;
-    --popover-foreground: 0 0% 96%;
+    --popover: 20 50% 6%;
+    --popover-foreground: 38 80% 92%;
 
-    --primary: 187 92% 53%;
-    --primary-foreground: 240 20% 4%;
+    --primary: 38 95% 52%;
+    --primary-foreground: 20 60% 4%;
 
-    --secondary: 240 10% 14%;
-    --secondary-foreground: 0 0% 96%;
+    --secondary: 20 30% 12%;
+    --secondary-foreground: 38 80% 92%;
 
-    --muted: 240 10% 14%;
-    --muted-foreground: 215 15% 55%;
+    --muted: 20 30% 12%;
+    --muted-foreground: 28 25% 50%;
 
-    --accent: 47 100% 50%;
-    --accent-foreground: 240 20% 4%;
+    --accent: 25 95% 48%;
+    --accent-foreground: 20 60% 4%;
 
-    --destructive: 0 62% 31%;
+    --destructive: 0 55% 30%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 10% 16%;
-    --input: 240 10% 16%;
-    --ring: 187 92% 53%;
+    --border: 20 25% 14%;
+    --input: 20 25% 14%;
+    --ring: 38 95% 52%;
 
-    --sidebar-background: 240 18% 8%;
-    --sidebar-foreground: 240 5% 90%;
-    --sidebar-primary: 187 92% 53%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 10% 16%;
-    --sidebar-accent-foreground: 240 5% 90%;
-    --sidebar-border: 240 10% 16%;
-    --sidebar-ring: 187 92% 53%;
+    --sidebar-background: 20 50% 6%;
+    --sidebar-foreground: 38 60% 85%;
+    --sidebar-primary: 38 95% 52%;
+    --sidebar-primary-foreground: 20 60% 4%;
+    --sidebar-accent: 20 30% 12%;
+    --sidebar-accent-foreground: 38 60% 85%;
+    --sidebar-border: 20 25% 14%;
+    --sidebar-ring: 38 95% 52%;
   }
 }
 
@@ -99,20 +100,20 @@
   }
 }
 
-/* Retro scanline effect */
+/* Dust/grit scanline effect */
 @keyframes scanline {
   0% { transform: translateY(-100%); }
   100% { transform: translateY(100vh); }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { opacity: 0.5; }
+  0%, 100% { opacity: 0.55; }
   50% { opacity: 1; }
 }
 
 @keyframes flicker {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.95; }
+  50% { opacity: 0.93; }
 }
 
 @keyframes float {
@@ -130,12 +131,12 @@
 }
 
 @keyframes run-pulse {
-  0%, 100% { box-shadow: 0 0 10px rgba(34, 211, 238, 0.1); }
-  50% { box-shadow: 0 0 30px rgba(34, 211, 238, 0.25); }
+  0%, 100% { box-shadow: 0 0 10px rgba(245, 158, 11, 0.15); }
+  50% { box-shadow: 0 0 30px rgba(245, 158, 11, 0.35); }
 }
 
 .animate-scanline {
-  animation: scanline 8s linear infinite;
+  animation: scanline 10s linear infinite;
 }
 
 .animate-pulse-glow {
@@ -143,7 +144,7 @@
 }
 
 .animate-flicker {
-  animation: flicker 0.1s ease-in-out infinite;
+  animation: flicker 0.12s ease-in-out infinite;
 }
 
 .animate-float {
@@ -164,19 +165,19 @@ canvas {
   image-rendering: crisp-edges;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar — rust theme */
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: hsl(240 20% 4%);
+  background: hsl(20 60% 4%);
 }
 ::-webkit-scrollbar-thumb {
-  background: hsl(187 92% 53% / 0.2);
+  background: hsl(38 95% 52% / 0.2);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(187 92% 53% / 0.4);
+  background: hsl(38 95% 52% / 0.4);
 }
 
 /* Prevent touch actions on game canvas */

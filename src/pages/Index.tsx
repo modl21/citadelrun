@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 import { useSeoMeta } from '@unhead/react';
-import { Zap, Play, Smartphone, Keyboard } from 'lucide-react';
+import { Zap, Play, Smartphone, Keyboard, Flame } from 'lucide-react';
 import type { NSecSigner } from '@nostrify/nostrify';
 
 import { Button } from '@/components/ui/button';
@@ -74,11 +74,14 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-full bg-[#0a0914] text-foreground overflow-y-auto">
-      {/* Subtle scanline overlay */}
-      <div className="fixed inset-0 pointer-events-none z-50 opacity-[0.02]">
-        <div className="w-full h-[200%] bg-[repeating-linear-gradient(transparent,transparent_2px,rgba(255,255,255,0.02)_2px,rgba(255,255,255,0.02)_4px)] animate-scanline" />
+    <div className="min-h-full bg-[#0d0700] text-foreground overflow-y-auto">
+      {/* Dust/grit overlay */}
+      <div className="fixed inset-0 pointer-events-none z-50 opacity-[0.025]">
+        <div className="w-full h-[200%] bg-[repeating-linear-gradient(transparent,transparent_2px,rgba(200,120,30,0.04)_2px,rgba(200,120,30,0.04)_4px)] animate-scanline" />
       </div>
+
+      {/* Distant heat shimmer glow at horizon */}
+      <div className="fixed bottom-0 left-0 right-0 h-32 pointer-events-none z-0 bg-gradient-to-t from-orange-900/10 to-transparent" />
 
       <div className="relative z-10 flex flex-col items-center min-h-full px-4 py-6 gap-5">
         {/* Weekly Winner Banner */}
@@ -86,11 +89,11 @@ const Index = () => {
 
         {/* Title */}
         <div className="text-center space-y-2">
-          <h1 className="font-pixel text-xl md:text-2xl text-cyan-400 tracking-wider animate-float">
+          <h1 className="font-pixel text-xl md:text-2xl text-amber-400 tracking-wider animate-float drop-shadow-[0_0_12px_rgba(245,158,11,0.5)]">
             CITADEL RUN
           </h1>
-          <p className="text-xs text-muted-foreground/80 max-w-xs mx-auto">
-            One life. Infinite run. Survive the gauntlet.
+          <p className="text-xs text-orange-300/60 max-w-xs mx-auto tracking-wide">
+            One life. Infinite wasteland. Survive or be dust.
           </p>
         </div>
 
@@ -103,51 +106,47 @@ const Index = () => {
 
           {/* Idle overlay */}
           {phase === 'idle' && (
-            <div className="absolute inset-0 flex items-center justify-center z-10 bg-black/50 backdrop-blur-[2px] rounded-lg">
+            <div className="absolute inset-0 flex items-center justify-center z-10 bg-black/60 backdrop-blur-[2px] rounded-lg">
               <div className="text-center space-y-5 p-6">
                 <div className="flex justify-center">
                   <div className="relative">
-                    <div className="size-14 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center animate-float">
-                      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" className="text-cyan-400">
-                        <path d="M6 22L14 6L22 22H6Z" fill="currentColor" opacity="0.4" />
-                        <path d="M10 22L14 10L18 22H10Z" fill="currentColor" />
-                        <circle cx="14" cy="8" r="3" fill="currentColor" />
-                      </svg>
+                    <div className="size-14 rounded-xl bg-orange-800/30 border border-orange-600/40 flex items-center justify-center animate-float">
+                      <Flame className="size-7 text-amber-400 fill-amber-500/60" />
                     </div>
-                    <div className="absolute -top-1 -right-1 size-4 bg-accent rounded-full flex items-center justify-center">
-                      <Zap className="size-2.5 text-accent-foreground fill-accent-foreground" />
+                    <div className="absolute -top-1 -right-1 size-4 bg-amber-500 rounded-full flex items-center justify-center">
+                      <Zap className="size-2.5 text-black fill-black" />
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <p className="font-pixel text-xs text-foreground tracking-wider">
+                  <p className="font-pixel text-xs text-amber-300 tracking-wider">
                     100 SATS = 1 LIFE
                   </p>
-                  <p className="text-[10px] text-muted-foreground max-w-[220px] mx-auto">
-                    Jump or shoot your way through. One hit and it&apos;s over.
+                  <p className="text-[10px] text-orange-200/60 max-w-[220px] mx-auto leading-relaxed">
+                    Run the wasteland. One hit and you&apos;re dead.
                   </p>
                 </div>
 
                 <Button
                   onClick={handleStartGame}
-                  className="bg-cyan-500 text-black font-pixel text-xs hover:bg-cyan-400 h-12 px-8 shadow-[0_0_20px_rgba(34,211,238,0.25)] hover:shadow-[0_0_30px_rgba(34,211,238,0.4)] transition-shadow"
+                  className="bg-amber-500 text-black font-pixel text-xs hover:bg-amber-400 h-12 px-8 shadow-[0_0_24px_rgba(245,158,11,0.3)] hover:shadow-[0_0_36px_rgba(245,158,11,0.5)] transition-shadow border border-amber-600/50"
                 >
-                  <Zap className="size-4 mr-2" />
+                  <Zap className="size-4 mr-2 fill-current" />
                   INSERT COIN
                 </Button>
 
                 {/* Controls hint */}
-                <div className="flex flex-col items-center gap-1.5 text-muted-foreground/50">
+                <div className="flex flex-col items-center gap-1.5 text-orange-300/40">
                   {isMobile ? (
                     <div className="flex items-center gap-1.5">
                       <Smartphone className="size-3" />
-                      <span className="text-[8px] font-pixel">TAP = JUMP &middot; DOUBLE TAP = SHOOT</span>
+                      <span className="text-[8px] font-pixel">JUMP (left) &middot; FIRE (right)</span>
                     </div>
                   ) : (
                     <div className="flex items-center gap-1.5">
                       <Keyboard className="size-3" />
-                      <span className="text-[8px] font-pixel">SPACE = JUMP &middot; DOUBLE SPACE = SHOOT</span>
+                      <span className="text-[8px] font-pixel">SPACE = JUMP &middot; ENTER = FIRE</span>
                     </div>
                   )}
                 </div>
@@ -157,32 +156,32 @@ const Index = () => {
 
           {/* Ready overlay — payment received, waiting to start */}
           {phase === 'ready' && (
-            <div className="absolute inset-0 flex items-center justify-center z-10 bg-black/60 backdrop-blur-[2px] rounded-lg">
+            <div className="absolute inset-0 flex items-center justify-center z-10 bg-black/70 backdrop-blur-[2px] rounded-lg">
               <div className="text-center space-y-6 p-6">
                 <div className="space-y-2">
-                  <p className="font-pixel text-[10px] text-cyan-400/70 tracking-wider">
-                    PAYMENT RECEIVED
+                  <p className="font-pixel text-[10px] text-amber-500/70 tracking-wider">
+                    SATS RECEIVED
                   </p>
-                  <p className="font-pixel text-sm text-foreground tracking-wider">
-                    GET READY
+                  <p className="font-pixel text-sm text-amber-300 tracking-wider">
+                    SADDLE UP
                   </p>
                 </div>
 
                 <Button
                   onClick={handleLaunchGame}
-                  className="bg-cyan-500 text-black font-pixel text-sm hover:bg-cyan-400 h-14 px-10 shadow-[0_0_30px_rgba(34,211,238,0.3)] hover:shadow-[0_0_40px_rgba(34,211,238,0.5)] transition-shadow animate-pulse-glow"
+                  className="bg-amber-500 text-black font-pixel text-sm hover:bg-amber-400 h-14 px-10 shadow-[0_0_30px_rgba(245,158,11,0.35)] hover:shadow-[0_0_48px_rgba(245,158,11,0.55)] transition-shadow animate-pulse-glow border border-amber-600/50"
                 >
                   <Play className="size-5 mr-2 fill-current" />
                   RUN
                 </Button>
 
                 {isMobile ? (
-                  <p className="text-[9px] text-muted-foreground/50 font-pixel">
-                    TAP = JUMP &middot; DOUBLE TAP = SHOOT
+                  <p className="text-[9px] text-orange-300/40 font-pixel">
+                    JUMP (left) &middot; FIRE (right)
                   </p>
                 ) : (
-                  <p className="text-[9px] text-muted-foreground/50 font-pixel">
-                    SPACE = JUMP &middot; DOUBLE SPACE = SHOOT
+                  <p className="text-[9px] text-orange-300/40 font-pixel">
+                    SPACE = JUMP &middot; ENTER = FIRE
                   </p>
                 )}
               </div>
@@ -201,21 +200,21 @@ const Index = () => {
 
         {/* Obstacle legend */}
         <div className="w-full max-w-md mx-auto">
-          <div className="flex items-center justify-center gap-4 text-[8px] font-pixel text-muted-foreground/60 flex-wrap">
+          <div className="flex items-center justify-center gap-4 text-[8px] font-pixel text-orange-300/50 flex-wrap">
             <span className="flex items-center gap-1.5">
-              <span className="inline-block w-2 h-2 bg-red-500 rotate-45" />
+              <span className="inline-block w-2 h-2 bg-red-600 rotate-45" />
               JUMP OVER
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="inline-block w-2 h-2 bg-lime-500" />
+              <span className="inline-block w-2 h-2 bg-yellow-700" />
               1 SHOT
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="inline-block w-2 h-2 bg-orange-500 rounded-sm" />
+              <span className="inline-block w-2 h-2 bg-orange-700 rounded-sm" />
               2 SHOTS
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="inline-block w-2 h-2 bg-purple-500" />
+              <span className="inline-block w-2 h-2 bg-stone-600" />
               3 SHOTS
             </span>
           </div>
@@ -225,13 +224,13 @@ const Index = () => {
         <Leaderboard />
 
         {/* Footer */}
-        <footer className="text-center text-[10px] text-muted-foreground/40 pb-4 space-y-1">
+        <footer className="text-center text-[10px] text-orange-300/30 pb-4 space-y-1">
           <p>
-            Scores stored on{' '}
-            <span className="text-cyan-400/50">Nostr</span>
+            Scores on{' '}
+            <span className="text-amber-500/50">Nostr</span>
             {' '}&middot;{' '}
             Payments via{' '}
-            <span className="text-accent/50">Lightning</span>
+            <span className="text-amber-500/50">Lightning</span>
           </p>
           <p>
             Vibed with{' '}
@@ -239,7 +238,7 @@ const Index = () => {
               href="https://shakespeare.diy"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-cyan-400/50 hover:text-cyan-400/80 transition-colors"
+              className="text-amber-500/50 hover:text-amber-400/80 transition-colors"
             >
               Shakespeare
             </a>

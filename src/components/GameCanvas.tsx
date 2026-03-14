@@ -5,8 +5,6 @@ import { renderGame } from '@/lib/gameRenderer';
 import { GAME_WIDTH, GAME_HEIGHT } from '@/lib/gameConstants';
 import type { GameState } from '@/lib/gameTypes';
 
-const DOUBLE_TAP_THRESHOLD = 300; // ms
-
 interface GameCanvasProps {
   onGameOver: (score: number) => void;
   isPlaying: boolean;
@@ -23,9 +21,8 @@ export function GameCanvas({ onGameOver, isPlaying }: GameCanvasProps) {
   // Input refs
   const jumpRef = useRef(false);
   const shootRef = useRef(false);
-  const lastTapRef = useRef(0);
 
-  // ── Canvas scaling ──────────────────────────────────────────────────────
+  // ── Canvas scaling ──────────────────────────────────────────────────────────
   useEffect(() => {
     function handleResize() {
       const maxW = Math.min(window.innerWidth - 16, 640);
@@ -39,99 +36,69 @@ export function GameCanvas({ onGameOver, isPlaying }: GameCanvasProps) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // ── Reset game when starting ────────────────────────────────────────────
+  // ── Reset game when starting ─────────────────────────────────────────────────
   useEffect(() => {
-    if (isPlaying) {
-      gameStateRef.current = createInitialState(performance.now());
-      gameOverCalledRef.current = false;
-      jumpRef.current = false;
-      shootRef.current = false;
-      lastTapRef.current = 0;
-    }
+    gameStateRef.current = createInitialState(performance.now());
+    gameOverCalledRef.current = false;
+    jumpRef.current = false;
+    shootRef.current = false;
   }, [isPlaying]);
 
-  // ── Input: determines jump vs shoot based on single/double press ────────
-  const handleAction = useCallback(() => {
-    const now = performance.now();
-    const sinceLastTap = now - lastTapRef.current;
-
-    if (sinceLastTap < DOUBLE_TAP_THRESHOLD) {
-      // Double tap/press → shoot
-      shootRef.current = true;
-      lastTapRef.current = 0; // reset to prevent triple-tap triggering another shoot
-      // auto-release shoot after a short window
-      setTimeout(() => {
-        shootRef.current = false;
-      }, 80);
-    } else {
-      // First tap → will jump (unless followed quickly by second tap)
-      lastTapRef.current = now;
-      // Delay the jump slightly to detect a possible double-tap
-      setTimeout(() => {
-        if (lastTapRef.current === now) {
-          // No second tap came — execute jump
-          jumpRef.current = true;
-          setTimeout(() => {
-            jumpRef.current = false;
-          }, 60);
-        }
-      }, DOUBLE_TAP_THRESHOLD * 0.6);
-    }
-  }, []);
-
-  // ── Desktop keyboard controls ───────────────────────────────────────────
+  // ── Desktop Keyboard Controls ───────────────────────────────────────────────
+  // Space = Jump, Enter = Shoot
   useEffect(() => {
     if (!isPlaying) return;
 
     function handleKeyDown(e: KeyboardEvent) {
       if (e.key === ' ' || e.key === 'ArrowUp') {
         e.preventDefault();
-        if (e.repeat) return; // ignore held key repeats
-        handleAction();
+        jumpRef.current = true;
+      }
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        shootRef.current = true;
+      }
+    }
+
+    function handleKeyUp(e: KeyboardEvent) {
+      if (e.key === ' ' || e.key === 'ArrowUp') {
+        jumpRef.current = false;
+      }
+      if (e.key === 'Enter') {
+        shootRef.current = false;
       }
     }
 
     window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [isPlaying, handleAction]);
+  }, [isPlaying]);
 
-  // ── Mobile touch controls ───────────────────────────────────────────────
-  useEffect(() => {
-    if (!isPlaying) return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+  // ── Mobile Touch Controls ───────────────────────────────────────────────────
+  const handleTouchStartJump = useCallback((e: React.TouchEvent | React.MouseEvent) => {
+    e.preventDefault();
+    jumpRef.current = true;
+  }, []);
 
-    function handleTouch(e: TouchEvent) {
-      e.preventDefault();
-      handleAction();
-    }
+  const handleTouchEndJump = useCallback((e: React.TouchEvent | React.MouseEvent) => {
+    e.preventDefault();
+    jumpRef.current = false;
+  }, []);
 
-    canvas.addEventListener('touchstart', handleTouch, { passive: false });
-    return () => {
-      canvas.removeEventListener('touchstart', handleTouch);
-    };
-  }, [isPlaying, handleAction]);
+  const handleTouchStartShoot = useCallback((e: React.TouchEvent | React.MouseEvent) => {
+    e.preventDefault();
+    shootRef.current = true;
+  }, []);
 
-  // Also handle click for desktop mouse
-  useEffect(() => {
-    if (!isPlaying) return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+  const handleTouchEndShoot = useCallback((e: React.TouchEvent | React.MouseEvent) => {
+    e.preventDefault();
+    shootRef.current = false;
+  }, []);
 
-    function handleClick(e: MouseEvent) {
-      e.preventDefault();
-      handleAction();
-    }
-
-    canvas.addEventListener('mousedown', handleClick);
-    return () => {
-      canvas.removeEventListener('mousedown', handleClick);
-    };
-  }, [isPlaying, handleAction]);
-
-  // ── Game loop ───────────────────────────────────────────────────────────
+  // ── Game loop ───────────────────────────────────────────────────────────────
   const gameLoop = useCallback(() => {
     if (!isPlaying) return;
 
@@ -171,7 +138,7 @@ export function GameCanvas({ onGameOver, isPlaying }: GameCanvasProps) {
     };
   }, [isPlaying, gameLoop]);
 
-  // ── Idle animation when not playing ─────────────────────────────────────
+  // ── Idle animation when not playing ─────────────────────────────────────────
   useEffect(() => {
     if (isPlaying) return;
 
@@ -225,15 +192,56 @@ export function GameCanvas({ onGameOver, isPlaying }: GameCanvasProps) {
   }, [isPlaying]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      width={GAME_WIDTH}
-      height={GAME_HEIGHT}
-      className="game-canvas rounded-lg border border-cyan-500/20 shadow-[0_0_30px_rgba(34,211,238,0.12)]"
-      style={{
-        width: GAME_WIDTH * canvasScale,
-        height: GAME_HEIGHT * canvasScale,
-      }}
-    />
+    <div className="relative">
+      <canvas
+        ref={canvasRef}
+        width={GAME_WIDTH}
+        height={GAME_HEIGHT}
+        className="game-canvas rounded-lg border border-orange-800/60 shadow-[0_0_40px_rgba(180,60,0,0.25)]"
+        style={{
+          width: GAME_WIDTH * canvasScale,
+          height: GAME_HEIGHT * canvasScale,
+          imageRendering: 'pixelated'
+        }}
+      />
+
+      {/* Mobile Controls Overlay */}
+      {isPlaying && (
+        <div className="absolute inset-0 z-10 pointer-events-none touch-none select-none">
+          {/* JUMP — left side */}
+          <div className="absolute bottom-4 left-3 pointer-events-auto">
+            <button
+              className="w-28 h-28 rounded-full bg-amber-500/25 border-2 border-amber-400/60 active:bg-amber-500/50 flex items-center justify-center transition-colors shadow-[0_0_20px_rgba(245,158,11,0.2)]"
+              onTouchStart={handleTouchStartJump}
+              onTouchEnd={handleTouchEndJump}
+              onMouseDown={handleTouchStartJump}
+              onMouseUp={handleTouchEndJump}
+              onTouchCancel={handleTouchEndJump}
+            >
+              <span className="text-amber-200 font-bold text-xl pointer-events-none tracking-widest drop-shadow-lg select-none">JUMP</span>
+            </button>
+          </div>
+
+          {/* SHOOT — right side */}
+          <div className="absolute bottom-4 right-3 pointer-events-auto">
+            <button
+              className="w-28 h-28 rounded-full bg-red-600/25 border-2 border-red-500/60 active:bg-red-600/50 flex items-center justify-center transition-colors shadow-[0_0_20px_rgba(220,38,38,0.2)]"
+              onTouchStart={handleTouchStartShoot}
+              onTouchEnd={handleTouchEndShoot}
+              onMouseDown={handleTouchStartShoot}
+              onMouseUp={handleTouchEndShoot}
+              onTouchCancel={handleTouchEndShoot}
+            >
+              <span className="text-red-200 font-bold text-xl pointer-events-none tracking-widest drop-shadow-lg select-none">FIRE</span>
+            </button>
+          </div>
+
+          {/* Desktop hint */}
+          <div className="absolute top-2 w-full text-center pointer-events-none text-amber-200/40 text-[10px] hidden sm:block">
+            SPACE to Jump &bull; ENTER to Fire
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
