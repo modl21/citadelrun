@@ -198,24 +198,28 @@ const Index = () => {
           )}
         </div>
 
-        {/* Obstacle legend */}
-        <div className="w-full max-w-md mx-auto">
-          <div className="flex items-center justify-center gap-4 text-[8px] font-pixel text-orange-300/50 flex-wrap">
+        {/* Hazard legend */}
+        <div className="w-full max-w-lg mx-auto">
+          <div className="flex items-center justify-center gap-4 text-[8px] font-pixel text-orange-300/60 flex-wrap">
             <span className="flex items-center gap-1.5">
-              <span className="inline-block w-2 h-2 bg-red-600 rotate-45" />
-              JUMP OVER
+              <span className="inline-flex items-end gap-[1px] h-2.5">
+                <span className="w-[2px] h-2 bg-red-600" />
+                <span className="w-[2px] h-2.5 bg-red-500" />
+                <span className="w-[2px] h-2 bg-red-600" />
+              </span>
+              REBAR TRAP
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="inline-block w-2 h-2 bg-yellow-700" />
-              1 SHOT
+              <span className="inline-block w-2.5 h-2.5 bg-yellow-800 border border-amber-500/40" />
+              MINE CRATE (1)
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="inline-block w-2 h-2 bg-orange-700 rounded-sm" />
-              2 SHOTS
+              <span className="inline-block w-2.5 h-2.5 bg-orange-800 rounded-[2px] border border-orange-400/35" />
+              FUEL DRUM (2)
             </span>
             <span className="flex items-center gap-1.5">
-              <span className="inline-block w-2 h-2 bg-stone-600" />
-              3 SHOTS
+              <span className="inline-block w-2.5 h-2.5 bg-stone-700 border border-orange-200/20" />
+              BARRICADE (3)
             </span>
           </div>
         </div>

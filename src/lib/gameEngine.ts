@@ -1,6 +1,5 @@
 import type {
   GameState,
-  Player,
   Bullet,
   Obstacle,
   ObstacleType,
@@ -11,7 +10,6 @@ import type {
 
 import {
   GAME_WIDTH,
-  GAME_HEIGHT,
   GROUND_Y,
   PLAYER_X,
   PLAYER_WIDTH,
@@ -41,6 +39,12 @@ import {
   SCORE_SHOOT2,
   SCORE_SHOOT3,
   SCORE_HIT,
+  COLOR_PARTICLE_DUST,
+  COLOR_CRATE,
+  COLOR_BARREL,
+  COLOR_WALL,
+  COLOR_HIT_FLASH,
+  COLOR_PLAYER_ACCENT,
 } from './gameConstants';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -272,7 +276,7 @@ export function updateGame(state: GameState, input: InputState, now: number): Ga
     // Dust particles at feet
     ns.particles = [
       ...state.particles,
-      ...makeParticles(player.x + player.width / 2, GROUND_Y, 6, '#94a3b8', 0.5, 2.5),
+      ...makeParticles(player.x + player.width / 2, GROUND_Y, 6, COLOR_PARTICLE_DUST, 0.5, 2.5),
     ];
   }
 
@@ -286,7 +290,7 @@ export function updateGame(state: GameState, input: InputState, now: number): Ga
       // Landing puff
       ns.particles = [
         ...ns.particles,
-        ...makeParticles(player.x + player.width / 2, GROUND_Y, 4, '#94a3b8', 0.3, 1.5),
+        ...makeParticles(player.x + player.width / 2, GROUND_Y, 4, COLOR_PARTICLE_DUST, 0.3, 1.5),
       ];
     }
   }
@@ -376,7 +380,7 @@ export function updateGame(state: GameState, input: InputState, now: number): Ga
           newObstacles[i] = { ...obs, hp: 0, active: false };
           const points = obs.maxHp === 1 ? SCORE_SHOOT1 : obs.maxHp === 2 ? SCORE_SHOOT2 : SCORE_SHOOT3;
           destroyScoreGain += points;
-          const colors = ['#fde047', '#f97316', '#a855f7', '#22d3ee'];
+          const colors = [COLOR_HIT_FLASH, COLOR_CRATE, COLOR_BARREL, COLOR_WALL];
           const col = colors[Math.min(obs.maxHp - 1, 3)];
           newParticles = [
             ...newParticles,
@@ -389,7 +393,7 @@ export function updateGame(state: GameState, input: InputState, now: number): Ga
           destroyScoreGain += SCORE_HIT;
           newParticles = [
             ...newParticles,
-            ...makeParticles(obs.x + obs.width / 2, obs.y + obs.height / 2, 4, '#fde047', 1, 3),
+            ...makeParticles(obs.x + obs.width / 2, obs.y + obs.height / 2, 4, COLOR_HIT_FLASH, 1, 3),
           ];
         }
         break;
@@ -430,8 +434,8 @@ export function updateGame(state: GameState, input: InputState, now: number): Ga
       ns.screenShake = 10;
       ns.particles = [
         ...ns.particles,
-        ...makeParticles(player.x + player.width / 2, player.y + player.height / 2, 18, '#22d3ee', 2, 6),
-        ...makeParticles(player.x + player.width / 2, player.y + player.height / 2, 8, '#f0abfc', 1, 4),
+        ...makeParticles(player.x + player.width / 2, player.y + player.height / 2, 18, COLOR_PLAYER_ACCENT, 2, 6),
+        ...makeParticles(player.x + player.width / 2, player.y + player.height / 2, 8, COLOR_PARTICLE_DUST, 1, 4),
       ];
       return ns;
     }
